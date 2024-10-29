@@ -13,7 +13,7 @@ app.use(cors({ origin: 3000 }));
 
 // ROUTES
 const products = require("./routes/newProduct");
-// app.get("/products", profileRoute); // fresh data from serpapi API
+app.get("/products", products); // fresh data from serpapi API
 // app.get("/product/:id", profileRoute); // collected data from local database
 // app.get("/product/carts", profileRoute); // collected data from local database
 // app.get("/product/likes", profileRoute); // collected data from local database
