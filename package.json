@@ -15,5 +15,14 @@
   "bugs": {
     "url": "https://github.com/Tsedhondup/personalized-recommendation/issues"
   },
-  "homepage": "https://github.com/Tsedhondup/personalized-recommendation#readme"
+  "homepage": "https://github.com/Tsedhondup/personalized-recommendation#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.1.7",
+    "routes": "^2.1.0",
+    "uuid": "^11.0.2"
+  }
 }
