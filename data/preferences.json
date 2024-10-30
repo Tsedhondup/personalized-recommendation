@@ -1,1 +1,18 @@
-[{"productName":"pen","preferenceScore":3}]
+[
+    {
+        "productName": "peach",
+        "preferenceScore": 12
+    },
+    {
+        "productName": "apple",
+        "preferenceScore": 4
+    },
+    {
+        "productName": "laptop",
+        "preferenceScore": 6
+    },
+    {
+        "productName": "IPHONE",
+        "preferenceScore": 3
+    }
+]
