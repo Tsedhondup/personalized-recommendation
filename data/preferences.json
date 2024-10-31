@@ -13,6 +13,18 @@
     },
     {
         "productName": "IPHONE",
+        "preferenceScore": 5
+    },
+    {
+        "productName": "ramen",
+        "preferenceScore": 3
+    },
+    {
+        "productName": "foundation",
+        "preferenceScore": 8
+    },
+    {
+        "productName": "shoe",
         "preferenceScore": 3
     }
 ]
