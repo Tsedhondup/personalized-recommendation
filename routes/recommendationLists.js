@@ -15,7 +15,7 @@ router.get("/recommendation", (req, res, nexst) => {
   //   .catch((error) => {
   //     res.status(500).json("Internal Server Error");
   //   });
-  validatePreferences("ramen");
+  validatePreferences("book");
   res.status(200).json({ message: " ok" });
 });
 module.exports = router;
