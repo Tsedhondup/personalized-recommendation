@@ -1,6 +1,6 @@
 const fs = require("fs");
 // CREATE CURRENT PRODUCTS
-const handleuCrrentProducts = (data) => {
+const handleCurrentProducts = (data) => {
   fs.writeFile("data/currentProducts.json", JSON.stringify(data), (err) => {
     console.log(err);
   });
@@ -15,3 +15,5 @@ const handleCurrentRecommendations = (data) => {
     }
   );
 };
+module.exports = handleCurrentProducts;
+// module.exports = handleCurrentRecommendations;

@@ -18,7 +18,7 @@ app.get("/products", productsRoute); // fresh data from serpapi API
 // app.get("/product/:id", profileRoute); // collected data from local database
 // app.get("/product/carts", profileRoute); // collected data from local database
 // app.get("/product/likes", profileRoute); // collected data from local database
-app.get("/recommendation", recommendationRoute); // fresh data from serpapi API
+app.get("/recommendations", recommendationRoute); // fresh data from serpapi API
 
 // app.post("/product/carts", profileRoute); // add to local database
 // app.post("/product/likes", profileRoute); // add to local database
