@@ -1,6 +1,24 @@
 const axios = require("axios");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
+
+const createFilteredProduct = (productData, index) => {
+  const filteredProduct = {
+    id: productData[index].product_id,
+    title: productData[index].title,
+    preferenceScore: productData[index].score,
+    link: productData[index].product_link,
+    source: productData[index].source,
+    source_logo: productData[index].source_icon,
+    price: productData[index].price,
+    rating: productData[index].ratiing,
+    review: productData[index].reviews,
+    image: productData[index].thumbnail,
+    snippet: productData[index].snippet,
+  };
+
+  return filteredProduct;
+};
 const sortForThreeOrLess = (res, data) => {
   const recommendationData = data.sort((item1, item2) => {
     item2.preferenceScore - item1.preferenceScore;
@@ -16,33 +34,42 @@ const sortForThreeOrLess = (res, data) => {
         return shopping_results;
       })
       .then((shopping_results) => {
-        shopping_results.forEach((item) => {
-          // TAG PRODUCT ITEM WITH PREFERENCE SCORE
-          if (counterIndex === 0) {
-            item.score = "a";
+        // TAG PRODUCT ITEM WITH PREFERENCE SCORE
+        if (counterIndex === 0) {
+          item.score = "a";
+          // 60% OF FROM THE TOTAL PRODUCTS WILL BE SEND
+          const totalProduct = shopping_results.length;
+          const totalProductToSend = totalProduct * 0.6; // approx = 24 products
+          for (let index = 0; index < totalProductToSend; index++) {
+            recommendationProducts.push(
+              createFilteredProduct(shopping_results, index)
+            );
           }
-          if (counterIndex > 0 && counterIndex < 2) {
-            item.score = "b";
+        }
+        if (counterIndex > 0 && counterIndex < 2) {
+          item.score = "b";
+          // 30% OF FROM THE TOTAL PRODUCTS WILL BE SEND
+          const totalProduct = shopping_results.length;
+          const totalProductToSend = totalProduct * 0.3; // approx = 12 products
+          for (let index = 0; index < totalProductToSend; index++) {
+            recommendationProducts.push(
+              createFilteredProduct(shopping_results, index)
+            );
           }
-          if (counterIndex > 1) {
-            item.score = "c";
+        }
+        if (counterIndex > 1) {
+          item.score = "c";
+          // 10% OF FROM THE TOTAL PRODUCTS WILL BE SEND
+          const totalProduct = shopping_results.length;
+          const totalProductToSend = totalProduct * 0.1; // approx = 4 products
+          for (let index = 0; index < totalProductToSend; index++) {
+            recommendationProducts.push(
+              createFilteredProduct(shopping_results, index)
+            );
           }
-          // CREATE DESIRED PRODUCTS
-          const filteredProduct = {
-            id: item.product_id,
-            title: item.title,
-            preferenceScore: item.score,
-            link: item.product_link,
-            source: item.source,
-            source_logo: item.source_icon,
-            price: item.price,
-            rating: item.ratiing,
-            review: item.reviews,
-            image: item.thumbnail,
-            snippet: item.snippet,
-          };
-          recommendationProducts.push(filteredProduct);
-        });
+        }
+
+        // CREATE DESIRED PRODUCTS
         counterIndex = counterIndex + 1;
       })
       .then(() => {
