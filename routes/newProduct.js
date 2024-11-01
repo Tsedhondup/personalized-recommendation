@@ -8,6 +8,9 @@ const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
 router.get("/products", (req, res, next) => {
+  // SORT AND CONVERT PRODUCT NAME TO LOWERCASE
+  const productNameArray = req.query.productName.split(" ");
+  console.log(productNameArray);
   // ADDING PREFERENCES TO DATABASE
   validatePreferences(req.query.productName);
 
