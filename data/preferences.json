@@ -1,14 +1,1 @@
-[
-    {
-        "productName": "plate",
-        "preferenceScore": 3
-    },
-    {
-        "productName": "book",
-        "preferenceScore": 3
-    },
-    {
-        "productName": "pen",
-        "preferenceScore": 2
-    }
-]
+[{"productName":"plate","preferenceScore":3},{"productName":"book","preferenceScore":1},{"productName":"ramen","preferenceScore":3},{"productName":"laptop","preferenceScore":1}]
