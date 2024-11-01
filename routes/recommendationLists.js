@@ -1,23 +1,35 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-const { validate } = require("uuid");
+const fs = require("fs");
 const validatePreferences = require("../utilities/handlePreferences");
-const handleCurrentProducts = require("../utilities/handleCurrentData");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
+const sortForMoreThanThree = require("../utilities/sortForMoreThanThree");
+const sortForThreeOrLess = require("../utilities/sortForThreeOrLess");
+
 router.get("/recommendations", (req, res, nexst) => {
-  // GET REQUEST
-  // axios
-  //   .get(`${baseAPI}&q=%22${req.query.productName}%22&api_key=${serpapiKey}`)
-  //   .then((respond) => {
-  //     res.status(200).json(respond.data.shopping_results);
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json("Internal Server Error");
-  //   });
-  // validatePreferences("book");
-  handleCurrentProducts(req.body);
-  res.status(200).json({ message: " ok" });
+  // GET ALL THE PREFERENCE DATA
+  fs.readFile("data/preferences.json", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ message: "network error" });
+    }
+    const parsedData = JSON.parse(data); // parsed data
+    // CHECK TOTAL LENGTH OF PREFERENCE DATA
+    if (parsedData.length > 0) {
+      const totalData = parsedData.length;
+      if (totalData <= 3) {
+        // IF THRE ARE THREE OR LESS, SEND PRODUCT RECOMMENDATIONS OF ALL THREE IN DESCENDING IN ORDER
+        sortForThreeOrLess(res, parsedData);
+      } else {
+        /*
+        IF THERE MORE THAN THREE PRODUCTS, 
+        THEN SEND THE PRODUCT RECOMMENDATIONS OF HIGHEST SCORED PRODUCTS IN DESCENDING ORDER
+        */
+        sortForMoreThanThree(res, parsedData);
+      }
+    }
+  });
 });
 module.exports = router;

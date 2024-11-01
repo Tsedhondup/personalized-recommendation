@@ -1,1 +1,25 @@
-[{"productName":"plate","preferenceScore":3},{"productName":"book","preferenceScore":3},{"preferenceScore":2},{"productName":"bottle","preferenceScore":4},{"productName":"ramen","preferenceScore":4},{"productName":"cake","preferenceScore":2}]
+[
+    {
+        "productName": "plate",
+        "preferenceScore": 3
+    },
+    {
+        "productName": "book",
+        "preferenceScore": 3
+    },
+    {
+        "preferenceScore": 2
+    },
+    {
+        "productName": "bottle",
+        "preferenceScore": 4
+    },
+    {
+        "productName": "ramen",
+        "preferenceScore": 4
+    },
+    {
+        "productName": "cake",
+        "preferenceScore": 2
+    }
+]

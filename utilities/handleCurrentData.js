@@ -15,5 +15,5 @@ const addCurrentRecommendations = (data) => {
     }
   );
 };
-module.exports = handleCurrentProducts;
+module.exports = addCurrentProducts;
 // module.exports = handleCurrentRecommendations;
