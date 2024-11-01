@@ -8,18 +8,7 @@
         "preferenceScore": 3
     },
     {
-        "preferenceScore": 2
-    },
-    {
-        "productName": "bottle",
-        "preferenceScore": 4
-    },
-    {
-        "productName": "ramen",
-        "preferenceScore": 4
-    },
-    {
-        "productName": "cake",
+        "productName": "pen",
         "preferenceScore": 2
     }
 ]

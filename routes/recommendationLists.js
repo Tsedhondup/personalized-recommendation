@@ -2,9 +2,6 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const fs = require("fs");
-const validatePreferences = require("../utilities/handlePreferences");
-const baseAPI = process.env.API_URl;
-const serpapiKey = process.env.API_KEY;
 const sortForMoreThanThree = require("../utilities/sortForMoreThanThree");
 const sortForThreeOrLess = require("../utilities/sortForThreeOrLess");
 
