@@ -2,3 +2,6 @@
 
 .env
 *.html
+currentProducts.json
+currentRecommendations.json
+preferences.json
