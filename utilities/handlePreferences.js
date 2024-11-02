@@ -33,7 +33,6 @@ const addPreferences = (preferenceData, newProductName) => {
   // CREATE NEW PRODUCT OBJECT
   const newProduct = { productName: newProductName, preferenceScore: 1 };
   preferenceData.push(newProduct);
-  console.log(preferenceData + "yes");
   writeFile(preferenceData);
   return;
 };
@@ -50,11 +49,13 @@ const validatePreferences = (productName) => {
       const preferenceData = JSON.parse(data);
       // CHECK IF SAME PRODUCT EXIST
       let isDataMatch = false;
+
       preferenceData.forEach((item) => {
         if (item.productName == productName) {
           isDataMatch = true;
         }
       });
+
       // CASE - 1**** IF SAME PRODUCT DOES NOT EXIST, CREATE NEW PRODUCT OBJECT AND ADD TO DATABASE
       if (!isDataMatch) {
         addPreferences(preferenceData, productName);

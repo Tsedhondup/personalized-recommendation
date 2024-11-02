@@ -7,16 +7,27 @@ const addCurrentProducts = require("../utilities/handleCurrentData");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
+const formateProductName = (productName) => {
+  const productNameArray = productName.split(" ");
+  let productNameConcate = "";
+  for (let index = 0; index < productNameArray.length; index++) {
+    productNameConcate = productNameConcate
+      ? `${productNameConcate}+${productNameArray[index]}`
+      : productNameArray[index];
+  }
+  return productNameConcate;
+};
+
 router.get("/products", (req, res, next) => {
-  // SORT AND CONVERT PRODUCT NAME TO LOWERCASE
-  const productNameArray = req.query.productName.split(" ");
-  console.log(productNameArray);
   // ADDING PREFERENCES TO DATABASE
   validatePreferences(req.query.productName);
 
-  // GETTING PRODUCT
   axios
-    .get(`${baseAPI}&q=%22${req.query.productName}%22&api_key=${serpapiKey}`)
+    .get(
+      `${baseAPI}&q=%22${formateProductName(
+        req.query.productName
+      )}%22&api_key=${serpapiKey}`
+    )
     .then((respond) => {
       addCurrentProducts(respond.data.shopping_results);
       res.status(200).json(respond.data.shopping_results);
