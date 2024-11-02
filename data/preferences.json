@@ -18,5 +18,9 @@
     {
         "productName": "blue color shoe",
         "preferenceScore": 3
+    },
+    {
+        "productName": "clinique dramatically different moisturizing",
+        "preferenceScore": 2
     }
 ]

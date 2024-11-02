@@ -5,7 +5,7 @@ const validatePreferences = require("../utilities/handlePreferences");
 
 router.post("/preferences", (req, res, nexst) => {
   // ADDING PREFERENCES TO DATABASE
-  validatePreferences(req.query.productName);
+  validatePreferences(req.body.productName);
   res.status(200).json({ message: "Product added to database" });
 });
 module.exports = router;
