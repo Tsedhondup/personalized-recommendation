@@ -15,6 +15,7 @@ app.use(cors({ origin: 3000 }));
 const productsRoute = require("./routes/newProduct");
 const recommendationRoute = require("./routes/recommendationLists");
 const currentDataRoute = require("./routes/currentData");
+const preferenceRoute = require("./routes/preferenceScore");
 app.get("/products", productsRoute); // fresh data from serpapi API
 // app.get("/product/:id", profileRoute); // collected data from local database
 // app.get("/product/carts", profileRoute); // collected data from local database
@@ -22,7 +23,7 @@ app.get("/products", productsRoute); // fresh data from serpapi API
 app.get("/recommendations", recommendationRoute); // fresh data from serpapi API
 app.get("/currentData", currentDataRoute); // fresh data from serpapi API
 
-// app.post("/product/carts", profileRoute); // add to local database
+app.post("/preferences", preferenceRoute); // add to local database
 // app.post("/product/likes", profileRoute); // add to local database
 
 // app.patch("/product/carts/:id", profileRoute); // update local database
