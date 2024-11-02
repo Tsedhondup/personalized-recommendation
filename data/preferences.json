@@ -1,37 +1,5 @@
 [
     {
-        "productName": "plate",
-        "preferenceScore": 3
-    },
-    {
-        "productName": "book",
-        "preferenceScore": 1
-    },
-    {
-        "productName": "ramen",
-        "preferenceScore": 4
-    },
-    {
-        "productName": "laptop",
-        "preferenceScore": 1
-    },
-    {
-        "productName": "bottle",
-        "preferenceScore": 2
-    },
-    {
-        "productName": "iphone",
-        "preferenceScore": 4
-    },
-    {
-        "productName": "CHARGER",
-        "preferenceScore": 3
-    },
-    {
-        "productName": "CHARGER FOR IPHONE",
-        "preferenceScore": 2
-    },
-    {
         "productName": "charger for iphone",
         "preferenceScore": 1
     },

@@ -1,6 +1,8 @@
 const axios = require("axios");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
+const formateProductName = require("../utilities/formateProductName");
+
 const createFilteredProduct = (productData, index) => {
   const filteredProduct = {
     id: productData[index].product_id,
@@ -27,7 +29,7 @@ const sortForMoreThanThree = (res, data) => {
   const recommendationProducts = [];
   recommendationData.forEach((item) => {
     axios
-      .get(`${baseAPI}&q=%22${item.productName}%22&api_key=${serpapiKey}`)
+      .get(`${baseAPI}&q=%22${formateProductName(item.productName)}%22&api_key=${serpapiKey}`)
       .then((respond) => {
         const shopping_results = respond.data.shopping_results;
         return shopping_results;
