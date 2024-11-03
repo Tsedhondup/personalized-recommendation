@@ -21,6 +21,42 @@
     },
     {
         "productName": "clinique dramatically different moisturizing",
+        "preferenceScore": 4
+    },
+    {
+        "productName": "clinique for men moisturizing lotion",
+        "preferenceScore": 3
+    },
+    {
+        "productName": "clinique dramatically different moisturizing gel",
+        "preferenceScore": 3
+    },
+    {
+        "productName": "clinique smart clinical repair wrinkle correcting rich cream",
+        "preferenceScore": 1
+    },
+    {
+        "productName": "clinique men's razor-ready routine skincare set",
         "preferenceScore": 2
+    },
+    {
+        "productName": "clinique men's daily hydration skincare set",
+        "preferenceScore": 2
+    },
+    {
+        "productName": "clinique men's oil-free moisturizer",
+        "preferenceScore": 1
+    },
+    {
+        "productName": "clinique men's daily age repair starter kit",
+        "preferenceScore": 1
+    },
+    {
+        "productName": "clinique men's super energizer anti-fatigue hydrating concentrate",
+        "preferenceScore": 3
+    },
+    {
+        "productName": "clinique for men maximum hydrator 72-hour auto-replenishing hydrator",
+        "preferenceScore": 1
     }
 ]

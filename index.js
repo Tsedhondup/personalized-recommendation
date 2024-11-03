@@ -17,17 +17,10 @@ const recommendationRoute = require("./routes/recommendationLists");
 const currentDataRoute = require("./routes/currentData");
 const preferenceRoute = require("./routes/preferenceScore");
 app.get("/products", productsRoute); // fresh data from serpapi API
-// app.get("/product/:id", profileRoute); // collected data from local database
-// app.get("/product/carts", profileRoute); // collected data from local database
-// app.get("/product/likes", profileRoute); // collected data from local database
 app.get("/recommendations", recommendationRoute); // fresh data from serpapi API
 app.get("/currentData", currentDataRoute); // fresh data from serpapi API
 
 app.post("/preferences", preferenceRoute); // add to local database
-// app.post("/product/likes", profileRoute); // add to local database
-
-// app.patch("/product/carts/:id", profileRoute); // update local database
-// app.patch("/product/likes/:id", profileRoute); // update local database
 
 // START EXPRESS SERVER
 app.listen(port, () => {
