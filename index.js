@@ -16,11 +16,13 @@ const productsRoute = require("./routes/newProduct");
 const recommendationRoute = require("./routes/recommendationLists");
 const currentDataRoute = require("./routes/currentData");
 const preferenceRoute = require("./routes/preferenceScore");
+const addCustomPreferences = require("./routes/addCustomPreferences");
 app.get("/products", productsRoute); // fresh data from serpapi API
 app.get("/recommendations", recommendationRoute); // fresh data from serpapi API
 app.get("/currentData", currentDataRoute); // fresh data from serpapi API
 
 app.post("/preferences", preferenceRoute); // add to local database
+app.post("/addCustomPreferences", addCustomPreferences); // add to local database
 
 // START EXPRESS SERVER
 app.listen(port, () => {

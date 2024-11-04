@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 // MAIN FUNCTION TO UPDATE DATABASE****
-const writeFile = (data) => {
+const writeFile = async (data) => {
   fs.writeFile("data/preferences.json", JSON.stringify(data), (err) => {
     console.log(err);
   });
