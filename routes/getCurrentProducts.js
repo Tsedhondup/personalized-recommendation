@@ -9,12 +9,17 @@ router.get("/getCurrentProducts", (req, res, nexst) => {
       console.log(err);
       res.status(500).json({ message: "network error" });
     }
-    const parsedData = JSON.parse(data); // parsed data
+    const currentData = JSON.parse(data); // parsed data
+
+    // CREATE A COPY OF MATCHED CURRENT PRODUCT LISTS
+    const requestedProductLists = currentData.filter((element) => {
+      return element.id === req.query.productListsId.toString();
+    });
     // CHECK TOTAL LENGTH OF PREFERENCE DATA
-    if (parsedData.length > 0) {
-      res.status(200).json({ parsedData });
+    if (requestedProductLists.length > 0) {
+      res.status(200).json({ requestedProductLists });
     } else {
-      res.status(200).json({ message: "no data" });
+      res.status(200).json([]);
     }
   });
 });

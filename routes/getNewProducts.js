@@ -33,7 +33,7 @@ router.get("/getNewProducts", (req, res, next) => {
   //     res.status(500).json("Internal Server Error");
   //   });
   const searchProduct = {
-    id: req.query.productId,
+    id: req.query.productListsId,
     name: req.query.productName,
     productLists: [
       {
