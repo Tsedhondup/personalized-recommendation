@@ -1,18 +1,1 @@
-[
-    {
-        "productName": "charger for iphone",
-        "preferenceScore": 1
-    },
-    {
-        "productName": "bottle",
-        "preferenceScore": 1
-    },
-    {
-        "productName": "ramen",
-        "preferenceScore": 10
-    },
-    {
-        "productName": "clinique for men maximum hydrator 72-hour auto-replenishing hydrator",
-        "preferenceScore": 4
-    }
-]
+[{"productName":"iphone","preferenceScore":2}]
