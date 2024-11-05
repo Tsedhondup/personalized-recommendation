@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 
-router.get("/currentData", (req, res, nexst) => {
+router.get("/getCurrentProducts", (req, res, nexst) => {
   // GET ALL THE PREFERENCE DATA
   fs.readFile("data/currentProducts.json", (err, data) => {
     if (err) {
