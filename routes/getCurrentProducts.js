@@ -14,7 +14,7 @@ router.get("/getCurrentProducts", (req, res, nexst) => {
     // CHECK TOTAL CURRENT DATA AND SEND PRODUCT LISTS WITH MATCHED ID
     if (currentData.length > 0) {
       res.status(200).json({
-        productLists: currentData.filter((element) => {
+        products: currentData.filter((element) => {
           return element.id === req.query.productListsId.toString();
         }),
       });

@@ -27,7 +27,7 @@ router.post("/newProducts", (req, res, next) => {
       };
 
       addCurrentProducts(searchProduct);
-      res.status(200).json({ status: "Search completed" });
+      res.status(200).json({ status: "SEARCH COMPLETED" });
     })
     .catch((error) => {
       res.status(500).json("Internal Server Error");
