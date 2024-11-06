@@ -8,26 +8,26 @@ const formateProductName = require("../utilities/formateProductName");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
-router.get("/getNewProducts", (req, res, next) => {
+router.post("/newProducts", (req, res, next) => {
   // ADDING PREFERENCES TO DATABASE
-  validatePreferences(req.query.productName);
+  validatePreferences(req.body.productName);
 
   axios
     .get(
       `${baseAPI}&q=%22${formateProductName(
-        req.query.productName
+        req.body.productName
       )}%22&api_key=${serpapiKey}`
     )
     .then((respond) => {
       // CREATE CURRENT PRODUCTS
       const searchProduct = {
-        id: req.query.productListsId,
-        name: req.query.productName,
+        id: req.body.productListsId,
+        name: req.body.productName,
         productLists: respond.data.shopping_results,
       };
 
       addCurrentProducts(searchProduct);
-      res.status(200).json(respond.data.shopping_results);
+      res.status(200).json({ status: "Search completed" });
     })
     .catch((error) => {
       res.status(500).json("Internal Server Error");

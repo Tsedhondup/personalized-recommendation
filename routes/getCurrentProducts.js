@@ -11,13 +11,13 @@ router.get("/getCurrentProducts", (req, res, nexst) => {
     }
     const currentData = JSON.parse(data); // parsed data
 
-    // CREATE A COPY OF MATCHED CURRENT PRODUCT LISTS
-    const requestedProductLists = currentData.filter((element) => {
-      return element.id === req.query.productListsId.toString();
-    });
-    // CHECK TOTAL LENGTH OF PREFERENCE DATA
-    if (requestedProductLists.length > 0) {
-      res.status(200).json({ requestedProductLists });
+    // CHECK TOTAL CURRENT DATA AND SEND PRODUCT LISTS WITH MATCHED ID
+    if (currentData.length > 0) {
+      res.status(200).json({
+        productLists: currentData.filter((element) => {
+          return element.id === req.query.productListsId.toString();
+        }),
+      });
     } else {
       res.status(200).json([]);
     }
