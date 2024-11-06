@@ -26,13 +26,11 @@ router.get("/getNewProducts", (req, res, next) => {
         productLists: respond.data.shopping_results,
       };
 
-      addCurrentProducts(respond.data.shopping_results);
+      addCurrentProducts(searchProduct);
       res.status(200).json(respond.data.shopping_results);
     })
     .catch((error) => {
       res.status(500).json("Internal Server Error");
     });
-
-     
 });
 module.exports = router;
