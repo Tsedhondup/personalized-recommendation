@@ -1,35 +1,26 @@
 [
     {
-        "userId": "2q352345245fet4",
+        "userId": "0bde9712-4509-4457-ae16-fb7a3772c76b",
         "data": [
             {
-                "preferenceScore": 2,
+                "preferenceScore": 1,
+                "productName": "groceries & food "
+            },
+            {
+                "preferenceScore": 1,
+                "productName": "sports & outdoors"
+            },
+            {
+                "preferenceScore": 1,
+                "productName": "beauty & personal care"
+            },
+            {
+                "preferenceScore": 1,
                 "productName": "health & wellness"
             },
             {
                 "preferenceScore": 1,
-                "productName": "toys & games"
-            },
-            {
-                "productName": "health & wellness",
-                "preferenceScore": 2
-            }
-        ]
-    },
-    {
-        "userId": "2343245635346",
-        "data": [
-            {
-                "productName": "apple",
-                "preferenceScore": 5
-            },
-            {
-                "productName": "orange",
-                "preferenceScore": 1
-            },
-            {
-                "productName": "health & wellness",
-                "preferenceScore": 1
+                "productName": "automotive"
             }
         ]
     }
