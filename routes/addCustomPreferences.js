@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 
-const addPreferencesData = (data) => {
+const addPreferencesData = (data, res) => {
   fs.writeFile("data/preferences.json", JSON.stringify([data]), (err) => {
     if (err) {
       res.status(500).json({ message: "Internal Server Error" });
@@ -17,6 +17,6 @@ router.post("/addCustomPreferences", (req, res, next) => {
     data: [...req.body.customProductTypes],
   };
 
-  addPreferencesData(preferenceData);
+  addPreferencesData(preferenceData, res);
 });
 module.exports = router;

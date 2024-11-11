@@ -1,7 +1,11 @@
 [
     {
-        "userId": "0bde9712-4509-4457-ae16-fb7a3772c76b",
+        "userId": "2478a058-d6e2-4644-b42f-a3268d2a2c68",
         "data": [
+            {
+                "preferenceScore": 1,
+                "productName": "health & wellness"
+            },
             {
                 "preferenceScore": 1,
                 "productName": "groceries & food "
@@ -13,14 +17,6 @@
             {
                 "preferenceScore": 1,
                 "productName": "beauty & personal care"
-            },
-            {
-                "preferenceScore": 1,
-                "productName": "health & wellness"
-            },
-            {
-                "preferenceScore": 1,
-                "productName": "automotive"
             }
         ]
     }
