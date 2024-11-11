@@ -7,37 +7,60 @@ const writeFile = async (data) => {
   });
 };
 // CREATE DATABASE DURING FIRST POST**
-const createPreferences = (productName) => {
+const createPreferences = (productName, userId) => {
   const preferenceData = [
     {
-      productName: productName,
-      preferenceScore: 1,
+      userId: userId,
+      data: [{ productName: productName, preferenceScore: 1 }],
     },
   ];
   writeFile(preferenceData);
 };
 // UPDATE EXISTING DATABASE**
-const updatePreferences = (preferenceData, productName) => {
+const updatePreferences = (preferenceData, productName, userId) => {
   // CREATE A SHALOW COPY OF DATABASE WITH UPDATED PREFERENCE SCORE
-  const preferenceDataCopy = preferenceData.map((item) => {
-    // UPDATE THE PREFERENCE SCORE WITH NEW DATA AND STORE IN A VARIABLE
-    if (item.productName === productName) {
-      item.preferenceScore = item.preferenceScore + 1;
+  const preferenceDataCopy = preferenceData.map((element0) => {
+    // CHECK IF USER ID IS FOUND
+    if (element0.userId === userId) {
+      let sameProductExist = false;
+      // check if same product exist or not
+      element0.data.forEach((element2) => {
+        sameProductExist = element2.productName === productName ? true : false;
+      });
+      // CASE-1
+      if (sameProductExist) {
+        element0.data.forEach((element1) => {
+          if (element1.productName === productName) {
+            element1.preferenceScore = element1.preferenceScore + 1;
+          }
+        });
+      } // CASE-2
+      else {
+        const newPreferenceData = {
+          productName: productName,
+          preferenceScore: 1,
+        };
+        element0.data.push(newPreferenceData);
+      }
     }
-    return item;
+
+    return element0;
   });
   writeFile(preferenceDataCopy);
 };
 // ADD NEW PRODUCT TO EXISTING DATABASE**
-const addPreferences = (preferenceData, newProductName) => {
+const addPreferences = (preferenceData, newProductName, userId) => {
   // CREATE NEW PRODUCT OBJECT
-  const newProduct = { productName: newProductName, preferenceScore: 1 };
-  preferenceData.push(newProduct);
+  const newPreferenceData = {
+    userId: userId,
+    data: [{ productName: newProductName, preferenceScore: 1 }],
+  };
+  preferenceData.push(newPreferenceData);
   writeFile(preferenceData);
   return;
 };
 
-const validatePreferences = (productName) => {
+const validatePreferences = (productName, userId) => {
   // RETRIEVE PREFERENCE DATA FROM DATABASE
   fs.readFile("data/preferences.json", (err, data) => {
     if (err) {
@@ -51,22 +74,26 @@ const validatePreferences = (productName) => {
       let isDataMatch = false;
 
       preferenceData.forEach((item) => {
-        if (item.productName == productName) {
+        // *** id will be check instead of product name
+        if (item.userId == userId) {
           isDataMatch = true;
         }
       });
 
       // CASE - 1**** IF SAME PRODUCT DOES NOT EXIST, CREATE NEW PRODUCT OBJECT AND ADD TO DATABASE
       if (!isDataMatch) {
-        addPreferences(preferenceData, productName);
+        // addition to preferenceData and productName, user id will be provided
+        addPreferences(preferenceData, productName, userId);
       }
       // CAE -2 **** IF SAME PRODUCT EXIST, UPDATE THE EXISTING PRODUCT PREFERENCE SCORE
       if (isDataMatch) {
-        updatePreferences(preferenceData, productName);
+        // addition to preferenceData and productName,product id will be provided
+        updatePreferences(preferenceData, productName, userId);
       }
     } else {
       // IF DATABASE IS EMPTY, CREATE DATABASE**********
-      createPreferences(productName);
+      // addition to productName, user id will be provided
+      createPreferences(productName, userId);
     }
   });
 };

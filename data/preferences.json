@@ -1,1 +1,36 @@
-[{"productName":"ice cream","preferenceScore":3},{"productName":"book","preferenceScore":6},{"productName":"pen","preferenceScore":1},{"productName":"ramen","preferenceScore":3},{"productName":"apple","preferenceScore":3},{"productName":"watch","preferenceScore":3},{"productName":"glass","preferenceScore":3},{"productName":"paper","preferenceScore":3},{"productName":"charger","preferenceScore":2},{"productName":"the silent patient","preferenceScore":2},{"productName":"go the fuck to sleep","preferenceScore":1},{"productName":"in five years: a novel","preferenceScore":1},{"productName":"educated: a memoir","preferenceScore":2},{"productName":"this will be fun: a novel","preferenceScore":1},{"productName":"what you do matters boxed set -- featuring all three new york times bestsellers (what do you do with an idea?, what do you do with a problem?, and","preferenceScore":1},{"productName":"icebreaker","preferenceScore":3},{"productName":"the women","preferenceScore":1},{"productName":"the housemaid is watching [book]","preferenceScore":1},{"productName":"a discovery of witches","preferenceScore":1},{"productName":"wish you were here: a novel","preferenceScore":1},{"productName":"bride","preferenceScore":1},{"productName":"house of flame and shadow","preferenceScore":2},{"productName":"save america","preferenceScore":4},{"productName":"it ends with us [book]","preferenceScore":1}]
+[
+    {
+        "userId": "2q352345245fet4",
+        "data": [
+            {
+                "preferenceScore": 2,
+                "productName": "health & wellness"
+            },
+            {
+                "preferenceScore": 1,
+                "productName": "toys & games"
+            },
+            {
+                "productName": "health & wellness",
+                "preferenceScore": 2
+            }
+        ]
+    },
+    {
+        "userId": "2343245635346",
+        "data": [
+            {
+                "productName": "apple",
+                "preferenceScore": 5
+            },
+            {
+                "productName": "orange",
+                "preferenceScore": 1
+            },
+            {
+                "productName": "health & wellness",
+                "preferenceScore": 1
+            }
+        ]
+    }
+]
