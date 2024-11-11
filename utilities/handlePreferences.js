@@ -22,8 +22,8 @@ const updatePreferences = (preferenceData, productName, userId) => {
   const preferenceDataCopy = preferenceData.map((element0) => {
     // CHECK IF USER ID IS FOUND
     if (element0.userId === userId) {
-      let sameProductExist = false;
       // check if same product exist or not
+      let sameProductExist = false;
       element0.data.forEach((element2) => {
         sameProductExist = element2.productName === productName ? true : false;
       });
@@ -82,17 +82,14 @@ const validatePreferences = (productName, userId) => {
 
       // CASE - 1**** IF SAME PRODUCT DOES NOT EXIST, CREATE NEW PRODUCT OBJECT AND ADD TO DATABASE
       if (!isDataMatch) {
-        // addition to preferenceData and productName, user id will be provided
         addPreferences(preferenceData, productName, userId);
       }
       // CAE -2 **** IF SAME PRODUCT EXIST, UPDATE THE EXISTING PRODUCT PREFERENCE SCORE
       if (isDataMatch) {
-        // addition to preferenceData and productName,product id will be provided
         updatePreferences(preferenceData, productName, userId);
       }
     } else {
       // IF DATABASE IS EMPTY, CREATE DATABASE**********
-      // addition to productName, user id will be provided
       createPreferences(productName, userId);
     }
   });
