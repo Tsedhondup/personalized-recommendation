@@ -81,7 +81,8 @@ const validatePreferences = (userId, productName, sourceName) => {
 
     // CHECK IF DATABASE CONTAINS PREFERENCE DATA
     if (JSON.parse(data).length > 0) {
-      console.log("no data");
+
+      
     } else {
       // CREATE DATABASE FOR THE FIRST TIME
       createPreferencesData(userId, productName, sourceName);

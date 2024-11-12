@@ -10,7 +10,7 @@ const serpapiKey = process.env.API_KEY;
 
 router.post("/newProducts", (req, res, next) => {
   // ADDING PREFERENCES TO DATABASE
-  validatePreferences(req.body.productName, req.body.userId);
+  validatePreferences(req.body.productName, req.body.userId, req.body.source);
 
   axios
     .get(
