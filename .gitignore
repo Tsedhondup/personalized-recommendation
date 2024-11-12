@@ -4,4 +4,4 @@
 *.html
 currentProducts.json
 currentRecommendations.json
-preferences.json
+preferenceData.json
