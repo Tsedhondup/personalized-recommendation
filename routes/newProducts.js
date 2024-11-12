@@ -34,12 +34,3 @@ router.post("/newProducts", (req, res, next) => {
     });
 });
 module.exports = router;
-/*** 
- *  // CHECK IF CURRENT PRODUCT EXIST IN DATABASE
-      element0.data.map((element1) => {
-        if (element1.productName === productName) {
-          // IF EXIST, UPDATE THE PREFERENCE SCORE
-          element1.preferenceScore = element1.preferenceScore + 1;
-        }
-      });
- * */

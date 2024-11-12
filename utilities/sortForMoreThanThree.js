@@ -19,7 +19,7 @@ const createFilteredProduct = (productData, index) => {
   };
 
   return filteredProduct;
-};
+}; 
 const sortForMoreThanThree = (res, data) => {
   const recommendationData = data.sort((item1, item2) => {
     item2.preferenceScore - item1.preferenceScore;
@@ -29,7 +29,11 @@ const sortForMoreThanThree = (res, data) => {
   const recommendationProducts = [];
   recommendationData.forEach((item) => {
     axios
-      .get(`${baseAPI}&q=%22${formateProductName(item.productName)}%22&api_key=${serpapiKey}`)
+      .get(
+        `${baseAPI}&q=%22${formateProductName(
+          item.productName
+        )}%22&api_key=${serpapiKey}`
+      )
       .then((respond) => {
         const shopping_results = respond.data.shopping_results;
         return shopping_results;
@@ -75,9 +79,7 @@ const sortForMoreThanThree = (res, data) => {
       })
       .then(() => {
         // RESPOND IS BEING SENT ONLY AFTER THE EVENTUAL COMPLETION OF LOOP
-        counterIndex === recommendationData.length
-          ? res.status(200).json(recommendationProducts)
-          : "";
+        counterIndex > 3 ? res.status(200).json(recommendationProducts) : "";
       })
       .catch((error) => {
         res.status(500).json("Internal Server Error");

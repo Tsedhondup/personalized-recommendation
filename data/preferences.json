@@ -1,22 +1,22 @@
 [
     {
-        "userId": "2478a058-d6e2-4644-b42f-a3268d2a2c68",
+        "userId": "1e453310-969e-4eed-8188-3f084272041e",
         "data": [
             {
+                "productName": "fashion",
                 "preferenceScore": 1,
-                "productName": "health & wellness"
+                "source": {
+                    "name": "zara",
+                    "score": 1
+                }
             },
             {
+                "productName": "sports & outdoors",
                 "preferenceScore": 1,
-                "productName": "groceries & food "
-            },
-            {
-                "preferenceScore": 1,
-                "productName": "sports & outdoors"
-            },
-            {
-                "preferenceScore": 1,
-                "productName": "beauty & personal care"
+                "source": {
+                    "name": "zara",
+                    "score": 1
+                }
             }
         ]
     }
