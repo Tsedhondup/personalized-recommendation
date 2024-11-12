@@ -2,7 +2,7 @@ const fs = require("fs");
 
 // MAIN FUNCTION TO UPDATE DATABASE****
 const writeFile = async (data) => {
-  fs.writeFile("data/preferences.json", JSON.stringify(data), (err) => {
+  fs.writeFile("data/preferenceData.json", JSON.stringify(data), (err) => {
     console.log(err);
   });
 };
@@ -73,7 +73,7 @@ const addPreferences = (preferenceData, newProductName, userId) => {
 
 const validatePreferences = (userId, productName, sourceName) => {
   // RETRIEVE PREFERENCE DATA FROM DATABASE
-  fs.readFile("data/preferences.json", (err, data) => {
+  fs.readFile("data/preferenceData.json", (err, data) => {
     if (err) {
       console.log(err);
       return;
@@ -81,8 +81,6 @@ const validatePreferences = (userId, productName, sourceName) => {
 
     // CHECK IF DATABASE CONTAINS PREFERENCE DATA
     if (JSON.parse(data).length > 0) {
-
-      
     } else {
       // CREATE DATABASE FOR THE FIRST TIME
       createPreferencesData(userId, productName, sourceName);
