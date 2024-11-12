@@ -60,14 +60,23 @@ const updatePreferences = (preferenceData, productName, userId) => {
   writeFile(preferenceDataCopy);
 };
 // ADD NEW PRODUCT TO EXISTING DATABASE**
-const addPreferences = (preferenceData, newProductName, userId) => {
+const addPreferences = (userId, productName, sourceName, currentData) => {
   // CREATE NEW PRODUCT OBJECT
   const newPreferenceData = {
     userId: userId,
-    data: [{ productName: newProductName, preferenceScore: 1 }],
+    data: [
+      {
+        productName: productName,
+        preferenceScore: 1,
+        source: {
+          name: sourceName,
+          score: 1,
+        },
+      },
+    ],
   };
-  preferenceData.push(newPreferenceData);
-  writeFile(preferenceData);
+  currentData.push(newPreferenceData);
+  writeFile(currentData);
   return;
 };
 
@@ -78,12 +87,24 @@ const handlePreferencesData = (userId, productName, sourceName) => {
       console.log(err);
       return;
     }
-
+    const parsedData = JSON.parse(data); // get preference data
+    let isUserId = false; // if user id is present or not
     // CHECK IF DATABASE CONTAINS PREFERENCE DATA
-    if (JSON.parse(data).length > 0) {
+    if (parsedData.length > 0) {
+      for (i = 0; i > parsedData.length; i++) {
+        // IF SAME USER EXIST
+        if (parsedData[i].userId === userId) {
+          isUserId = true;
+        }
+      }
+
+      // CASE-1 : IF USER ID DOES EXIST
+
+      // CASE-2 : IF USER ID DO NOT EXIST
+      addPreferences(userId, productName, sourceName, parsedData);
     } else {
       // CREATE DATABASE FOR THE FIRST TIME
-      createPreferencesData(userId, productName, sourceName);
+      createPreferencesData(userId, productName, sourceName, parsedData);
     }
   });
 };
