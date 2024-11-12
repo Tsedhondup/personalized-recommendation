@@ -71,7 +71,7 @@ const addPreferences = (preferenceData, newProductName, userId) => {
   return;
 };
 
-const validatePreferences = (userId, productName, sourceName) => {
+const handlePreferencesData = (userId, productName, sourceName) => {
   // RETRIEVE PREFERENCE DATA FROM DATABASE
   fs.readFile("data/preferenceData.json", (err, data) => {
     if (err) {
@@ -87,4 +87,4 @@ const validatePreferences = (userId, productName, sourceName) => {
     }
   });
 };
-module.exports = validatePreferences;
+module.exports = handlePreferencesData;
