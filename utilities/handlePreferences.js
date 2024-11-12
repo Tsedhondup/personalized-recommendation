@@ -7,11 +7,22 @@ const writeFile = async (data) => {
   });
 };
 // CREATE DATABASE DURING FIRST POST**
-const createPreferencesData = (productName, userId) => {
+const createPreferencesData = (userId, productName, sourceName) => {
   const preferenceData = [
     {
       userId: userId,
-      data: [{ productName: productName, preferenceScore: 1 }],
+      data: [
+        {
+          productName: productName,
+          preferenceScore: 1,
+          source: [
+            {
+              name: sourceName,
+              score: 1,
+            },
+          ],
+        },
+      ],
     },
   ];
   writeFile(preferenceData);
@@ -60,7 +71,7 @@ const addPreferences = (preferenceData, newProductName, userId) => {
   return;
 };
 
-const validatePreferences = (userId, productName, brand) => {
+const validatePreferences = (userId, productName, sourceName) => {
   // RETRIEVE PREFERENCE DATA FROM DATABASE
   fs.readFile("data/preferences.json", (err, data) => {
     if (err) {
@@ -73,7 +84,7 @@ const validatePreferences = (userId, productName, brand) => {
       console.log("no data");
     } else {
       // CREATE DATABASE FOR THE FIRST TIME
-      createPreferencesData(userId, productName, brand);
+      createPreferencesData(userId, productName, sourceName);
     }
   });
 };
