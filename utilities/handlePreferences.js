@@ -2,22 +2,27 @@ const fs = require("fs");
 
 // MAIN FUNCTION TO UPDATE DATABASE****
 const writeFile = async (data) => {
-  fs.writeFile("data/preferenceData.json", JSON.stringify(data), (err) => {
+  fs.writeFile("data/userData.json", JSON.stringify(data), (err) => {
     console.log(err);
+    return;
   });
 };
 // CREATE DATABASE DURING FIRST POST**
 const createPreferencesData = (userId, productName, sourceName) => {
+  const id = userId;
+  const product = productName;
+  const source = sourceName;
+
   const preferenceData = [
     {
-      userId: userId,
+      userId: id,
       data: [
         {
-          productName: productName,
+          productName: product,
           preferenceScore: 1,
           source: [
             {
-              name: sourceName,
+              name: source,
               score: 1,
             },
           ],
@@ -28,39 +33,53 @@ const createPreferencesData = (userId, productName, sourceName) => {
   writeFile(preferenceData);
 };
 // UPDATE EXISTING DATABASE**
-const updatePreferences = (preferenceData, productName, userId) => {
-  // CREATE A SHALOW COPY OF DATABASE WITH UPDATED PREFERENCE SCORE
-  const preferenceDataCopy = preferenceData.map((element0) => {
-    // CHECK IF USER ID IS FOUND
-    if (element0.userId === userId) {
-      // check if same product exist or not
-      let sameProductExist = false;
-      element0.data.forEach((element2) => {
-        sameProductExist = element2.productName === productName ? true : false;
-      });
-      // CASE-1
-      if (sameProductExist) {
-        element0.data.forEach((element1) => {
-          if (element1.productName === productName) {
-            element1.preferenceScore = element1.preferenceScore + 1;
+const updateUser = (userId, productName, sourceName, currentData) => {
+  // LOOP THROUGH CURRENT DATA
+  for (let i = 0; i < currentData.length; i++) {
+    // FIDING MATCHED USER ID
+    if (currentData[i].userId === userId) {
+      // CHECK IF SAME PRODUCT EXIST OR NOT USING FOOR LOOP
+      for (let ii = 0; ii < currentData[i].data.length; ii++) {
+        // IF SAME PRODUCT NAME EXIST -------------------------------------- PRODUCT NAME CHECK
+        if (currentData[i].data[ii].productName === productName) {
+          // 1st : INCREASE PREFERENCE SCORE CURRENT PRODUCT BY +1
+          currentData[i].data[ii].preferenceScore += 1;
+          console.log(currentData[i].data[ii]);
+          // 2nd : CHECK SOURC NAME EXIST OR NOT USING FOOR LOOP
+          for (
+            let iii = 0;
+            iii < currentData[i].data[ii].source.length;
+            iii++
+          ) {
+            // SOURCE NAME DO EXIST ---------------------------- SOURCE NAME CHECK
+            if (currentData[i].data[ii].source[iii].name === sourceName) {
+              currentData[i].data[ii].source[iii].score += 1;
+            } else {
+              // SOURCE NAME DO NOT EXIST ------------------------ SOURCE NAME CHECK
+              const newBrand = {
+                name: sourceName,
+                score: 1,
+              };
+              currentData[i].data[ii].source.push(newBrand);
+            }
           }
-        });
-      } // CASE-2
-      else {
-        const newPreferenceData = {
-          productName: productName,
-          preferenceScore: 1,
-        };
-        element0.data.push(newPreferenceData);
+        } else {
+          // IF SAME PRODUCT DO NOT EXIST -------------------------------------- PRODUCT NAME CHECK
+          const newProductData = {
+            productName: productName,
+            preferenceScore: 1,
+            brand: [{ name: sourceName, preferenceScore: 1 }],
+          };
+          // ADD NEW PRODUCT TO USER DATA ARRAY
+          currentData[i].data.push(newProductData);
+        }
       }
     }
-
-    return element0;
-  });
-  writeFile(preferenceDataCopy);
+  }
+  writeFile(currentData);
 };
 // ADD NEW PRODUCT TO EXISTING DATABASE**
-const addPreferences = (userId, productName, sourceName, currentData) => {
+const addUser = (userId, productName, sourceName, currentData) => {
   // CREATE NEW PRODUCT OBJECT
   const newPreferenceData = {
     userId: userId,
@@ -82,26 +101,23 @@ const addPreferences = (userId, productName, sourceName, currentData) => {
 
 const handlePreferencesData = (userId, productName, sourceName) => {
   // RETRIEVE PREFERENCE DATA FROM DATABASE
-  fs.readFile("data/preferenceData.json", (err, data) => {
+  fs.readFile("data/userData.json", (err, data) => {
     if (err) {
       console.log(err);
       return;
     }
     const parsedData = JSON.parse(data); // get preference data
-    let isUserId = false; // if user id is present or not
     // CHECK IF DATABASE CONTAINS PREFERENCE DATA
     if (parsedData.length > 0) {
-      for (i = 0; i > parsedData.length; i++) {
-        // IF SAME USER EXIST
-        if (parsedData[i].userId === userId) {
-          isUserId = true;
+      parsedData.forEach((element) => {
+        if (element.userId === userId) {
+          // CASE-1 : IF USER ID DOES EXIST
+          updateUser(userId, productName, sourceName, parsedData);
+        } else {
+          // CASE-2 : IF USER ID DO NOT EXIST
+          addUser(userId, productName, sourceName, parsedData);
         }
-      }
-
-      // CASE-1 : IF USER ID DOES EXIST
-
-      // CASE-2 : IF USER ID DO NOT EXIST
-      addPreferences(userId, productName, sourceName, parsedData);
+      });
     } else {
       // CREATE DATABASE FOR THE FIRST TIME
       createPreferencesData(userId, productName, sourceName, parsedData);
