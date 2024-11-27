@@ -12,18 +12,17 @@ const port = process.env.PORT || 8000;
 app.use(cors({ origin: 3000 }));
 
 // ROUTES
-const products = require("./routes/newProduct");
-app.get("/products", products); // fresh data from serpapi API
-// app.get("/product/:id", profileRoute); // collected data from local database
-// app.get("/product/carts", profileRoute); // collected data from local database
-// app.get("/product/likes", profileRoute); // collected data from local database
-// app.get("/recommendation"); // fresh data from serpapi API
+const newProductsRoute = require("./routes/newProducts");
+const getRecommendationRoute = require("./routes/getRecommendations");
+const getCurrentDataRoute = require("./routes/getCurrentProducts");
+const preferenceRoute = require("./routes/preferenceScore");
+const addCustomPreferences = require("./routes/addCustomPreferences");
+app.get("/getRecommendations", getRecommendationRoute); // fresh data from serpapi API
+app.get("/getCurrentProducts", getCurrentDataRoute); // fresh data from serpapi API
 
-// app.post("/product/carts", profileRoute); // add to local database
-// app.post("/product/likes", profileRoute); // add to local database
-
-// app.patch("/product/carts/:id", profileRoute); // update local database
-// app.patch("/product/likes/:id", profileRoute); // update local database
+app.post("/newProducts", newProductsRoute); // fresh data from serpapi API
+app.post("/preferences", preferenceRoute); // add to local database
+app.post("/addCustomPreferences", addCustomPreferences); // add to local database
 
 // START EXPRESS SERVER
 app.listen(port, () => {
