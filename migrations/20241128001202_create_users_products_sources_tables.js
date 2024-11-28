@@ -5,7 +5,7 @@
 exports.up = function (knex) {
   return knex.schema
     .createTable("users", (table) => {
-      table.increments("user_id").primary();
+      table.increments("user_id").primary().notNullable();
       table.string("sessionId").notNullable();
       table.timestamp("created_at").defaultTo(knex.fn.now());
       table
@@ -34,7 +34,7 @@ exports.up = function (knex) {
       table
         .integer("product_id")
         .unsigned()
-        .references("product.id")
+        .references("products.id")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
       table.timestamp("created_at").defaultTo(knex.fn.now());
