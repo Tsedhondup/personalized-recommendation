@@ -1,13 +1,18 @@
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> } 
+ * @returns { Promise<void> }
  */
-exports.seed = async function(knex) {
-  // Deletes ALL existing entries
-  await knex('table_name').del()
-  await knex('table_name').insert([
-    {id: 1, colName: 'rowValue1'},
-    {id: 2, colName: 'rowValue2'},
-    {id: 3, colName: 'rowValue3'}
-  ]);
-};
+module.exports = [
+  {
+    user_id: 1,
+    sessionId: "2q352fddfffffdfhgfdh52dfdffsdf4",
+  },
+  {
+    user_id: 2,
+    sessionId: "2q352fddfffffdfhgfdh52dfhgfsdf4",
+  },
+  {
+    user_id: 3,
+    sessionId: "2q352fddfffffdfhgfdh52dtyffsdf4",
+  },
+];
