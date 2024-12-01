@@ -1,9 +1,15 @@
 const knex = require("knex")(require("../knexfile"));
-const formateProductName = require("../utilities/formateProductName");
+const getFirstTimePersonalized = require("../utilities/firstTimePersonalized");
+const getNotFirstTimePersonalized = require("../utilities/notFirstTimePersonalized");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 const axios = require("axios");
 
+const getPersonalized = async (req, res, products) => {
+  req.body.firstTime
+    ? getFirstTimePersonalized(req, res, products)
+    : getNotFirstTimePersonalized(req, res, products);
+};
 const getSources = async (req, res, productLists) => {
   try {
     const productArray = productLists.map(async (product) => {
@@ -24,7 +30,7 @@ const getSources = async (req, res, productLists) => {
     });
     // Wait for all queries to complete
     const products = await Promise.all(productArray); // const products = productsArray
-    res.status(200).json(products);
+    getPersonalized(req, res, products);
   } catch (error) {
     console.error("Error fetching product data:", error);
   }
