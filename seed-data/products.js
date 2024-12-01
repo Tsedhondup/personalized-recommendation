@@ -21,4 +21,10 @@ module.exports = [
     preference_score: 5,
     user_id: 2,
   },
+  {
+    id: 4,
+    name: "you can win",
+    preference_score: 5,
+    user_id: 3,
+  },
 ];

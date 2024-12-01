@@ -17,6 +17,12 @@ module.exports = [
   },
   {
     id: 3,
+    name: "best buy",
+    source_score: 4,
+    product_id: 2,
+  },
+  {
+    id: 4,
     name: "No frill",
     source_score: 5,
     product_id: 2,
