@@ -11,13 +11,11 @@ const addCustomProducts = (req, res, user) => {
         preference_score: 1,
         user_id: user.user_id,
       })
-      .then(() => {
-        res.status(200).json(user);
-      })
       .catch((error) => {
         console.log(error);
       });
   }
+  res.status(200).json(user);
 };
 
 const addUser = (req, res) => {
