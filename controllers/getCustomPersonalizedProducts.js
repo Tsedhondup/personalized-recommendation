@@ -1,14 +1,13 @@
 const knex = require("knex")(require("../knexfile"));
-const getFirstTimePersonalized = require("../utilities/firstTimePersonalized");
-const getNotFirstTimePersonalized = require("../utilities/notFirstTimePersonalized");
-const baseAPI = process.env.API_URl;
-const serpapiKey = process.env.API_KEY;
-const axios = require("axios");
+const firstTimePersonalized = require("../utilities/getFirstTimePersonalized");
+const notFirstTimePersonalized = require("../utilities/getNotFirstTimePersonalized");
 
 const getPersonalized = async (req, res, products) => {
-  req.body.firstTime
-    ? getFirstTimePersonalized(req, res, products)
-    : getNotFirstTimePersonalized(req, res, products);
+  if (req.body.firstTime) {
+    firstTimePersonalized(req, res, products);
+  } else {
+    notFirstTimePersonalized(req, res, products);
+  }
 };
 const getSources = async (req, res, productLists) => {
   try {
