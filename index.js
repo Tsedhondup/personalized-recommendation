@@ -19,6 +19,7 @@ const preferenceRoute = require("./routes/preferenceScore");
 const addCustomPreferences = require("./routes/addCustomPreferences");
 // new routes
 const userRoute = require("./routes/userRoutes");
+const getPersonalized = require("./routes/getPersonalized");
 app.get("/getRecommendations", getRecommendationRoute); // fresh data from serpapi API
 app.get("/getCurrentProducts", getCurrentDataRoute); // fresh data from serpapi API
 
@@ -27,6 +28,7 @@ app.post("/preferences", preferenceRoute); // add to local database
 app.post("/addCustomPreferences", addCustomPreferences); // add to local database
 
 // new end points
+app.get("/getPersonalized", getPersonalized);
 app.post("/addUser", userRoute);
 // START EXPRESS SERVER
 app.listen(port, () => {
