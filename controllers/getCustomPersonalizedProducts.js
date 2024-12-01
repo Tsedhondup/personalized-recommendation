@@ -4,37 +4,38 @@ const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 const axios = require("axios");
 
-const getCustomPersonalized = (req, res) => {
-  axios
-    .get(
-      `${baseAPI}&q=%22${formateProductName(
-        req.body.productName
-      )}%22&api_key=${serpapiKey}`
-    )
-    .then((respond) => {
-      // CREATE CURRENT PRODUCTS
-      const searchProduct = {
-        id: req.body.productListsId,
-        name: req.body.productName,
-        productLists: respond.data.shopping_results,
+const getSources = async (req, res, productLists) => {
+  try {
+    const productArray = productLists.map(async (product) => {
+      // getting all the sources asynchronously
+      const sources = await knex("sources").where("product_id", product.id); // return all sources
+      // return object
+      return {
+        id: product.id,
+        productName: product.name,
+        preferenceScore: product.preference_score,
+        sources: sources.map((element) => ({
+          id: element.id,
+          name: element.name,
+          score: element.source_score,
+          product_id: element.product_id,
+        })),
       };
-
-      addCurrentProducts(searchProduct);
-      res.status(200).json({ status: "SEARCH COMPLETED" });
-    })
-    .catch((error) => {
-      res.status(500).json("Internal Server Error");
     });
+    // Wait for all queries to complete
+    const products = await Promise.all(productArray); // const products = productsArray
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+  }
 };
 
 const getCustomPreferences = (req, res) => {
   knex("products")
     .where("user_id", req.body.userId)
-    .select("name")
-    .then((data) => {
-      res.status(200).json(data);
+    .then((productLists) => {
+      getSources(req, res, productLists);
     })
-
     .catch((error) => {
       console.log(error);
     });
