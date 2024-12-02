@@ -41,6 +41,20 @@ exports.up = function (knex) {
       table
         .timestamp("updated_at")
         .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
+    })
+    .createTable("current_searches", (table) => {
+      table.increments("id").primary();
+      table.string("current_search", 1000).notNullable();
+      table
+        .integer("user_id")
+        .unsigned()
+        .references("users.user_id")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      table.timestamp("created_at").defaultTo(knex.fn.now());
+      table
+        .timestamp("updated_at")
+        .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
     });
 };
 
