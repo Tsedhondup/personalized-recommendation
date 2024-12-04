@@ -1,6 +1,4 @@
 /node_modules
-/personalizedData
-/currentSearchData
 /data
 .env
 *.html

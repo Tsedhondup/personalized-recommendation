@@ -6,19 +6,22 @@ const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
 const getSavedPersonalized = (req, res) => {
-  fs.readFile(`personalizedData/${req.body.sessionId}.json`, (error, data) => {
-    if (error) {
-      console.log(error);
-      res.status(500).json({ message: "something went wrong" });
-    }
-    const personalizedData = JSON.parse(data);
-    const currentSearchPersonalizedData = personalizedData.filter(
-      (productLists) => {
-        return productLists.searchOrigin === req.body.currentSearch;
+  fs.readFile(
+    `data/personalizedData/${req.body.sessionId}.json`,
+    (error, data) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json({ message: "something went wrong" });
       }
-    );
-    res.status(200).json(currentSearchPersonalizedData[0]);
-  });
+      const personalizedData = JSON.parse(data);
+      const currentSearchPersonalizedData = personalizedData.filter(
+        (productLists) => {
+          return productLists.searchOrigin === req.body.currentSearch;
+        }
+      );
+      res.status(200).json(currentSearchPersonalizedData[0]);
+    }
+  );
 };
 const updatePreferences = async (req, res, lastSearchNames) => {
   // UPDATE PREFERENCE SCORE OF CURRENT SEARCHED PRODUCT
@@ -51,46 +54,49 @@ const updatePreferences = async (req, res, lastSearchNames) => {
 };
 
 const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
-  fs.readFile(`personalizedData/${req.body.sessionId}.json`, (error, data) => {
-    if (error) {
-      console.log(error);
+  fs.readFile(
+    `data/personalizedData/${req.body.sessionId}.json`,
+    (error, data) => {
+      if (error) {
+        console.log(error);
+      }
+      // PARSED EXISITING PERSONALIZED DATA
+      const parsedData = JSON.parse(data);
+      // CHECK IF DATABASE CONTAINS PREFERENCE DATA
+      if (parsedData.length > 0) {
+        // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
+        const newPersonalizedItem = {
+          searchOrigin: req.body.currentSearch,
+          productData: personalizedData.map((product) => product),
+        };
+        // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
+        const newPersonalizedData = [...parsedData, newPersonalizedItem];
+        fs.writeFile(
+          `personalizedData/${req.body.sessionId}.json`,
+          JSON.stringify(newPersonalizedData),
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
+        const newPersonalizedItem = {
+          searchOrigin: req.body.currentSearch,
+          productData: personalizedData.map((product) => {
+            return product;
+          }),
+        };
+        // CREATING PERSONALIZED DATA FOR THE FIRST TIME
+        fs.writeFile(
+          `personalizedData/${req.body.sessionId}.json`,
+          JSON.stringify([newPersonalizedItem]),
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     }
-    // PARSED EXISITING PERSONALIZED DATA
-    const parsedData = JSON.parse(data);
-    // CHECK IF DATABASE CONTAINS PREFERENCE DATA
-    if (parsedData.length > 0) {
-      // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
-      const newPersonalizedItem = {
-        searchOrigin: req.body.currentSearch,
-        productData: personalizedData.map((product) => product),
-      };
-      // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
-      const newPersonalizedData = [...parsedData, newPersonalizedItem];
-      fs.writeFile(
-        `personalizedData/${req.body.sessionId}.json`,
-        JSON.stringify(newPersonalizedData),
-        (error) => {
-          console.log(error);
-        }
-      );
-    } else {
-      // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
-      const newPersonalizedItem = {
-        searchOrigin: req.body.currentSearch,
-        productData: personalizedData.map((product) => {
-          return product;
-        }),
-      };
-      // CREATING PERSONALIZED DATA FOR THE FIRST TIME
-      fs.writeFile(
-        `personalizedData/${req.body.sessionId}.json`,
-        JSON.stringify([newPersonalizedItem]),
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-  });
+  );
 };
 const getSearchedResult = (req, searchedResult) => {
   // MODIFY SHOPPING_RESULTS
