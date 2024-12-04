@@ -12,25 +12,11 @@ const port = process.env.PORT || 8000;
 app.use(cors({ origin: 3000 }));
 
 // ROUTES
-const newProductsRoute = require("./routes/newProducts");
-const getRecommendationRoute = require("./routes/getRecommendations");
-const getCurrentDataRoute = require("./routes/getCurrentProducts");
-const preferenceRoute = require("./routes/preferenceScore");
-const addCustomPreferences = require("./routes/addCustomPreferences");
 
-// new routes
 const userRoute = require("./routes/userRoutes");
 const getPersonalized = require("./routes/getPersonalized");
 const getCurrentSearchPersonalizedRoute = require("./routes/getCurrentSearchPersonalizedRoute");
 
-// app.get("/getRecommendations", getRecommendationRoute); // fresh data from serpapi API
-// app.get("/getCurrentProducts", getCurrentDataRoute); // fresh data from serpapi API
-
-// app.post("/newProducts", newProductsRoute); // fresh data from serpapi API
-// app.post("/preferences", preferenceRoute); // add to local database
-// app.post("/addCustomPreferences", addCustomPreferences); // add to local database
-
-// new end points
 app.get("/getPersonalized", getPersonalized);
 app.get("/getCurrentSearchPersonalized", getCurrentSearchPersonalizedRoute);
 app.post("/addUser", userRoute);
