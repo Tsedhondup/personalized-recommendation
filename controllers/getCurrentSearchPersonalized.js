@@ -5,10 +5,23 @@ const formateProductName = require("../utilities/formateProductName");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
-const getSavedPersonalized = (req, res) => {};
+const getSavedPersonalized = (req, res) => {
+  fs.readFile(`personalizedData/${req.body.sessionId}.json`, (error, data) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ message: "something went wrong" });
+    }
+    const personalizedData = JSON.parse(data);
+    const currentSearchPersonalizedData = personalizedData.filter(
+      (productLists) => {
+        return (productLists.searchOrigin = req.body.currentSearch);
+      }
+    );
+    res.status(200).json(currentSearchPersonalizedData[0]);
+  });
+};
 const updatePreferences = async (req, res, lastSearchNames) => {
   // UPDATE PREFERENCE SCORE OF CURRENT SEARCHED PRODUCT
-
   try {
     await knex("products")
       .where("name", req.body.currentSearch)
@@ -121,7 +134,7 @@ const getSearchedResult = (req, searchedResult) => {
   }
 };
 
-const newSearch = async (req, res) => {
+const makeNewSearch = async (req, res) => {
   try {
     const searchResult = await axios.get(
       `${baseAPI}&q=%22${formateProductName(
@@ -170,7 +183,7 @@ const getCurrentSearchPersonalized = async (req, res) => {
       return searchName.current_search === req.body.currentSearch;
     });
     // invoke conditional call-back functions
-    hasLastSearch ? updatePreferences(req, res) : newSearch(req, res);
+    hasLastSearch ? updatePreferences(req, res) : makeNewSearch(req, res);
   } catch (error) {
     res.status(500).json({
       message: "something went wrong",
