@@ -5,8 +5,36 @@ const formateProductName = require("../utilities/formateProductName");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
-const getSavedPersonalizedData = (req, res) => {
-  res.status(200).json({ message: "retrieving saved data" });
+const getSavedPersonalized = (req, res) => {};
+const updatePreferences = async (req, res, lastSearchNames) => {
+  // UPDATE PREFERENCE SCORE OF CURRENT SEARCHED PRODUCT
+
+  try {
+    await knex("products")
+      .where("name", req.body.currentSearch)
+      .andWhere("user_id", req.body.userId)
+      .then((product) => {
+        const updatedPeferenceScore = product[0].preference_score + 2; // actively search product by user will have double increment
+        return updatedPeferenceScore;
+      })
+      .then((updatedPeferenceScore) => {
+        knex("products")
+          .where("name", req.body.currentSearch)
+          .andWhere("user_id", req.body.userId)
+          .update({
+            preference_score: Number(updatedPeferenceScore),
+          })
+          .then(() => {
+            getSavedPersonalized(req, res);
+          })
+          .catch((error) => console.error("Update failed:", error));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    res.statu(500).json({ message: "Something went wrong " });
+  }
 };
 
 const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
@@ -126,7 +154,7 @@ const newSearch = async (req, res) => {
           message: "send any back up recommendation data from saved file",
         });
   } catch (error) {
-    res.status(500).json({ message: "something went wrong at newSearch" });
+    res.status(500).json({ message: "something went wrong" });
   }
 };
 
@@ -142,12 +170,10 @@ const getCurrentSearchPersonalized = async (req, res) => {
       return searchName.current_search === req.body.currentSearch;
     });
     // invoke conditional call-back functions
-    hasLastSearch
-      ? getSavedPersonalizedData(req, res, lastSearchNames)
-      : newSearch(req, res);
+    hasLastSearch ? updatePreferences(req, res) : newSearch(req, res);
   } catch (error) {
     res.status(500).json({
-      message: "something went wrong at getCurrentSearchPersonalized",
+      message: "something went wrong",
     });
   }
 };
