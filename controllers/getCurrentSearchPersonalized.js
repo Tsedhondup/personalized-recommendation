@@ -14,7 +14,7 @@ const getSavedPersonalized = (req, res) => {
     const personalizedData = JSON.parse(data);
     const currentSearchPersonalizedData = personalizedData.filter(
       (productLists) => {
-        return (productLists.searchOrigin = req.body.currentSearch);
+        return productLists.searchOrigin === req.body.currentSearch;
       }
     );
     res.status(200).json(currentSearchPersonalizedData[0]);

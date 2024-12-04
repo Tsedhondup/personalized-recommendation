@@ -1,7 +1,6 @@
 /node_modules
-
+/personalizedData
+/currentSearchData
+/data
 .env
 *.html
-currentProducts.json
-currentRecommendations.json
-preferenceData.json
