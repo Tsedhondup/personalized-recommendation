@@ -1,0 +1,39 @@
+{
+    "immersive_products": [
+        {
+            "category": "Popular products",
+            "thumbnail": "https://serpapi.com/searches/674fdb64861b9de5ebe7a5ab/images/1a5c822d0cb83da5e9dbe72687b25ad92f3bc18e36eff3e050263b5feb6d2c79.webp",
+            "source_logo": "https://serpapi.com/searches/674fdb64861b9de5ebe7a5ab/images/1a5c822d0cb83da5e9dbe72687b25ad9186041efac9ba1a4d71e8cc6ddfcf257f7a165e49737ef04.png",
+            "source": "Amazon",
+            "title": "Mexican Reusable Iced Coffee Sleeve with Handle for Most Coffee Cups or Drinks, Insulator Sleeves Neoprene Mexico Style Floral Bird Cup Holder, Fits",
+            "price": "$5.99",
+            "extracted_price": 5.99,
+            "immersive_product_page_token": "eyJlaSI6IlpkdFBaOWlRRUwyRXdia1BfZUhvOFFNIiwicHJvZHVjdGlkIjoiODE3MjczMTkzNTI0MjYxMTM1OSIsImNhdGFsb2dpZCI6IiIsInZjIjoiIiwidnNjIjoiIiwiaGVhZGxpbmVPZmZlckRvY2lkIjoiODE3MjczMTkzNTI0MjYxMTM1OSIsImltYWdlRG9jaWQiOiI4MDc0Mzk2MDQ0NzA0MTk0MDM3IiwicmRzIjoiIiwicXVlcnkiOiJtZXhpY2FuK0NvZmZlZSthY2Nlc3NvcmllcyJ9",
+            "serpapi_link": "https://serpapi.com/search.json?engine=google_immersive_product&page_token=eyJlaSI6IlpkdFBaOWlRRUwyRXdia1BfZUhvOFFNIiwicHJvZHVjdGlkIjoiODE3MjczMTkzNTI0MjYxMTM1OSIsImNhdGFsb2dpZCI6IiIsInZjIjoiIiwidnNjIjoiIiwiaGVhZGxpbmVPZmZlckRvY2lkIjoiODE3MjczMTkzNTI0MjYxMTM1OSIsImltYWdlRG9jaWQiOiI4MDc0Mzk2MDQ0NzA0MTk0MDM3IiwicmRzIjoiIiwicXVlcnkiOiJtZXhpY2FuK0NvZmZlZSthY2Nlc3NvcmllcyJ9"
+        },
+        {
+            "category": "Popular products",
+            "thumbnail": "https://serpapi.com/searches/674fdb64861b9de5ebe7a5ab/images/1a5c822d0cb83da5e9dbe72687b25ad9f2a4e5f4c6687929eb015f9f09664e4a.webp",
+            "source_logo": "https://serpapi.com/searches/674fdb64861b9de5ebe7a5ab/images/1a5c822d0cb83da5e9dbe72687b25ad9155a1cef59855cbeb2486fae0ca1102b2ca93b8ff68933ea.png",
+            "source": "Etsy - TheTalaveraHub",
+            "title": "Set of 4 Handmade Mexico Mugs | Talavera Clay Jarritos",
+            "rating": 4.9,
+            "reviews": 174,
+            "price": "$24.99",
+            "extracted_price": 24.99,
+            "immersive_product_page_token": "eyJlaSI6IlpkdFBaOWlRRUwyRXdia1BfZUhvOFFNIiwicHJvZHVjdGlkIjoiNzI1MjI0MjAzNTk5MjE0ODgyNiIsImNhdGFsb2dpZCI6IiIsInZjIjoiIiwidnNjIjoiIiwiaGVhZGxpbmVPZmZlckRvY2lkIjoiNzI1MjI0MjAzNTk5MjE0ODgyNiIsImltYWdlRG9jaWQiOiI2OTg1NDYwNzE0ODk2ODM3ODI2IiwicmRzIjoiTE9fNzI1MjI0MjAzNTk5MjE0ODgyNnxQUk9EX0xPXzcyNTIyNDIwMzU5OTIxNDg4MjYiLCJxdWVyeSI6Im1leGljYW4rQ29mZmVlK2FjY2Vzc29yaWVzIn0=",
+            "serpapi_link": "https://serpapi.com/search.json?engine=google_immersive_product&page_token=eyJlaSI6IlpkdFBaOWlRRUwyRXdia1BfZUhvOFFNIiwicHJvZHVjdGlkIjoiNzI1MjI0MjAzNTk5MjE0ODgyNiIsImNhdGFsb2dpZCI6IiIsInZjIjoiIiwidnNjIjoiIiwiaGVhZGxpbmVPZmZlckRvY2lkIjoiNzI1MjI0MjAzNTk5MjE0ODgyNiIsImltYWdlRG9jaWQiOiI2OTg1NDYwNzE0ODk2ODM3ODI2IiwicmRzIjoiTE9fNzI1MjI0MjAzNTk5MjE0ODgyNnxQUk9EX0xPXzcyNTIyNDIwMzU5OTIxNDg4MjYiLCJxdWVyeSI6Im1leGljYW4rQ29mZmVlK2FjY2Vzc29yaWVzIn0%3D"
+        },
+        {
+            "category": "Popular products",
+            "thumbnail": "https://serpapi.com/searches/674fdd415bb6a21a439d6bcd/images/1a1ff6a22891a3d53f23de24c38c32922d6909fe788fcc9adf4104fe1e6d1065.webp",
+            "source_logo": "https://serpapi.com/searches/674fdd415bb6a21a439d6bcd/images/1a1ff6a22891a3d53f23de24c38c329266747d526e8422af81b93386cceac859c0ba887db1dba7fc.gif",
+            "source": "Amazon",
+            "title": "Vaseline Cocoa Radiant Lotion Set",
+            "price": "$21.99",
+            "extracted_price": 21.99,
+            "immersive_product_page_token": "eyJlaSI6IlJOMVBaNUxzTVltUXdia1AyTzJyNkFZIiwicHJvZHVjdGlkIjoiIiwiY2F0YWxvZ2lkIjoiMjE2MDQ5NjczMzk2MTY5MjYzMiIsInZjIjoiIiwidnNjIjoiIiwiaGVhZGxpbmVPZmZlckRvY2lkIjoiNTM2OTczMzA1Mjc5MDg2NzAxMyIsImltYWdlRG9jaWQiOiIxMTcxMjUzNTE0Mjk2Mzg5OTY3NyIsInJkcyI6IiIsInF1ZXJ5IjoidmFzZWxpbmUrYWNjZXNzb3JpZXMifQ==",
+            "serpapi_link": "https://serpapi.com/search.json?engine=google_immersive_product&page_token=eyJlaSI6IlJOMVBaNUxzTVltUXdia1AyTzJyNkFZIiwicHJvZHVjdGlkIjoiIiwiY2F0YWxvZ2lkIjoiMjE2MDQ5NjczMzk2MTY5MjYzMiIsInZjIjoiIiwidnNjIjoiIiwiaGVhZGxpbmVPZmZlckRvY2lkIjoiNTM2OTczMzA1Mjc5MDg2NzAxMyIsImltYWdlRG9jaWQiOiIxMTcxMjUzNTE0Mjk2Mzg5OTY3NyIsInJkcyI6IiIsInF1ZXJ5IjoidmFzZWxpbmUrYWNjZXNzb3JpZXMifQ%3D%3D"
+        }
+    ]
+}
