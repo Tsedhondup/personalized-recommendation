@@ -5,7 +5,9 @@ const formateProductName = require("../utilities/formateProductName");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
-const getSavedPersonalizedData = (req, res) => {};
+const getSavedPersonalizedData = (req, res) => {
+  res.status(200).json({ message: "retrieving saved data" });
+};
 
 const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
   fs.readFile(`personalizedData/${req.body.sessionId}.json`, (error, data) => {
@@ -105,6 +107,17 @@ const newSearch = async (req, res) => {
     if (modifiedSearchedData.data.length > 0) {
       addSearchedDataToPersonalizedFile(req, modifiedSearchedData.data);
     }
+    // ADDING NEW SEARCHED PRODUCT TO DATABASE
+    await knex("products").insert({
+      name: req.body.currentSearch,
+      preference_score: 1,
+      user_id: req.body.userId,
+    });
+    // ADDING CURRENT SEARCH NAME TO DATABASE
+    await knex("current_searches").insert({
+      current_search: req.body.currentSearch,
+      user_id: req.body.userId,
+    });
     // SEDING RESPOND
     modifiedSearchedData.data.length > 0
       ? res.status(200).json(modifiedSearchedData.data)
