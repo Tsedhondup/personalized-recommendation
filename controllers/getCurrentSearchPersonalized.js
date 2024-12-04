@@ -5,6 +5,7 @@ const formateProductName = require("../utilities/formateProductName");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
+// GETTING TEMPORARILY SAVED PERSONALIZED PRODUCTS AND SEND THEM TO CLIENT SITE
 const getSavedPersonalized = (req, res) => {
   fs.readFile(
     `data/personalizedData/${req.body.sessionId}.json`,
@@ -23,6 +24,7 @@ const getSavedPersonalized = (req, res) => {
     }
   );
 };
+// UPDATE PREFERENCE SCORE OF EXISTING SEARCHED PRODUCT NAME FROM IN DATABASE
 const updatePreferences = async (req, res, lastSearchNames) => {
   // UPDATE PREFERENCE SCORE OF CURRENT SEARCHED PRODUCT
   try {
@@ -53,6 +55,7 @@ const updatePreferences = async (req, res, lastSearchNames) => {
   }
 };
 
+// MODIFIED SEARCH PRODUCTS AND PREPARING TO SEND AS A RESPOND
 const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
   fs.readFile(
     `data/personalizedData/${req.body.sessionId}.json`,
@@ -98,6 +101,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
     }
   );
 };
+// RESULTED SEARCHED PRODUCTS ARE BEING TEMPRARILY SAVED IN JSON FILE
 const getSearchedResult = (req, searchedResult) => {
   // MODIFY SHOPPING_RESULTS
   if (searchedResult.data.shopping_results) {
@@ -139,7 +143,7 @@ const getSearchedResult = (req, searchedResult) => {
     };
   }
 };
-
+// MAKE FRESH API REQUEST TO GET NEW RELATED PRODUCTS TO CURRENT SEARCH
 const makeNewSearch = async (req, res) => {
   try {
     const searchResult = await axios.get(
@@ -177,6 +181,7 @@ const makeNewSearch = async (req, res) => {
   }
 };
 
+// OPENING FUNCTION TO GETTING USER'S SEARCHED PRODUCTS
 const getCurrentSearchPersonalized = async (req, res) => {
   try {
     // get all search  history
