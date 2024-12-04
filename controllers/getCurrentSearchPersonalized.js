@@ -1,9 +1,54 @@
 const knex = require("knex")(require("../knexfile"));
 const axios = require("axios");
+const fs = require("fs");
 const formateProductName = require("../utilities/formateProductName");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
 
+const getSavedPersonalizedData = (req, res) => {};
+
+const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
+  fs.readFile(`personalizedData/${req.body.sessionId}.json`, (error, data) => {
+    if (error) {
+      console.log(error);
+    }
+    // PARSED EXISITING PERSONALIZED DATA
+    const parsedData = JSON.parse(data);
+    // CHECK IF DATABASE CONTAINS PREFERENCE DATA
+    if (parsedData.length > 0) {
+      // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
+      const newPersonalizedItem = {
+        searchOrigin: req.body.currentSearch,
+        productData: personalizedData.map((product) => product),
+      };
+      // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
+      const newPersonalizedData = [...parsedData, newPersonalizedItem];
+      fs.writeFile(
+        `personalizedData/${req.body.sessionId}.json`,
+        JSON.stringify(newPersonalizedData),
+        (error) => {
+          console.log(error);
+        }
+      );
+    } else {
+      // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
+      const newPersonalizedItem = {
+        searchOrigin: req.body.currentSearch,
+        productData: personalizedData.map((product) => {
+          return product;
+        }),
+      };
+      // CREATING PERSONALIZED DATA FOR THE FIRST TIME
+      fs.writeFile(
+        `personalizedData/${req.body.sessionId}.json`,
+        JSON.stringify([newPersonalizedItem]),
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  });
+};
 const getSearchedResult = (req, searchedResult) => {
   // MODIFY SHOPPING_RESULTS
   if (searchedResult.data.shopping_results) {
@@ -45,6 +90,7 @@ const getSearchedResult = (req, searchedResult) => {
     };
   }
 };
+
 const newSearch = async (req, res) => {
   try {
     const searchResult = await axios.get(
@@ -55,6 +101,11 @@ const newSearch = async (req, res) => {
 
     // GET MODIFIED SEARCHED DATA
     const modifiedSearchedData = getSearchedResult(req, searchResult);
+    // ADD PERSONALIZED DATA TO USER TEMPORARY JSON FILE
+    if (modifiedSearchedData.data.length > 0) {
+      addSearchedDataToPersonalizedFile(req, modifiedSearchedData.data);
+    }
+    // SEDING RESPOND
     modifiedSearchedData.data.length > 0
       ? res.status(200).json(modifiedSearchedData.data)
       : res.status(200).json({
@@ -65,7 +116,6 @@ const newSearch = async (req, res) => {
     res.status(500).json({ message: "something went wrong at newSearch" });
   }
 };
-const getSavedPersonalizedData = () => {};
 
 const getCurrentSearchPersonalized = async (req, res) => {
   try {
