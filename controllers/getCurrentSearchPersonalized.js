@@ -24,7 +24,7 @@ const getSavedPersonalized = (req, res) => {
     }
   );
 };
-// UPDATE PREFERENCE SCORE OF EXISTING SEARCHED PRODUCT NAME FROM IN DATABASE
+// UPDATE PREFERENCE SCORES OF SIMILAR SEARCHED PRODUCT NAME AND USER-ID - INVOKED IN getCurrentSearchPersonalized()
 const updatePreferences = async (req, res, lastSearchNames) => {
   // UPDATE PREFERENCE SCORE OF CURRENT SEARCHED PRODUCT
   try {
@@ -55,7 +55,7 @@ const updatePreferences = async (req, res, lastSearchNames) => {
   }
 };
 
-// MODIFIED SEARCH PRODUCTS AND PREPARING TO SEND AS A RESPOND
+// ADDING SEARCHED PRODUCTS TO PERSONALIZED JSON FILE
 const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
   fs.readFile(
     `data/personalizedData/${req.body.sessionId}.json`,
@@ -101,7 +101,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
     }
   );
 };
-// RESULTED SEARCHED PRODUCTS ARE BEING TEMPRARILY SAVED IN JSON FILE
+// GET SEARCH RESULT FROM SERPAPI API RESPOND AND ARE MODIFIED
 const getSearchedResult = (req, searchedResult) => {
   // MODIFY SHOPPING_RESULTS
   if (searchedResult.data.shopping_results) {
