@@ -15,10 +15,12 @@ app.use(cors({ origin: 3000 }));
 const userRoute = require("./routes/userRoutes");
 const currentSearchPersonalizedRoute = require("./routes/currentSearchPersonalizedRoute");
 const mainPersonalizedRoute = require("./routes/mainPersonalizedRoute");
+const savedPersonalizedRoute = require("./routes/savedPersonalizedRoute");
 
 app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
 app.use("/mainPersonalized", mainPersonalizedRoute);
 app.use("/user", userRoute);
+app.use("/savedPersonalized", savedPersonalizedRoute);
 
 // START EXPRESS SERVER
 app.listen(port, () => {

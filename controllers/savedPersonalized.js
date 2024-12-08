@@ -1,4 +1,5 @@
 const knex = require("knex")(require("../knexfile"));
+
 const getSavedPersonalized = async (req, res) => {
   const savedPersonalized = await knex("saved_products").where(
     "user_id",
@@ -7,6 +8,4 @@ const getSavedPersonalized = async (req, res) => {
   res.status(200).json(savedPersonalized);
 };
 
-module.exports = -{
-  getSavedPersonalized,
-};
+module.exports = { getSavedPersonalized };
