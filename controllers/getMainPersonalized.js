@@ -1,5 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
 const axios = require("axios");
+const fs = require("fs");
 const formateProductName = require("../utilities/formateProductName");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
@@ -48,29 +49,54 @@ const filterSearchedResult = (searchedResult) => {
   }
 };
 
+// TEMPORARILY SAVING MAIN PERSONALIZED PRODUCTS IN JSON FILE
+const savedFetchedData = (req, fetchedData) => {
+  fs.writeFile(
+    `data/mainPersonalizedData/${req.body.sessionId}.json`,
+    JSON.stringify(fetchedData),
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+// MAKE FRESH API REQUEST TO GET DATA FOR ALL SELECTED PRODUCTS
 const fetchProducts = async (req, res, allProductsWithSources) => {
   // MAKING SERPAPI API REQUEST
   const fetchedData = await Promise.all(
     allProductsWithSources.map(async (product) => {
       const sourceName = product.sources ? product.sources[0]?.name : "";
-      return await axios.get(
+      const searchedData = await axios.get(
         `${baseAPI}&q=%22${formateProductName(
           `${sourceName} ${product.productName} `
         )}%22&api_key=${serpapiKey}`
       );
+      return {
+        productName: product.productName,
+        data: searchedData,
+      };
     })
   );
   // FILTER FETCHED DATA
   const filteredFetchedData = fetchedData.map((searchedData) => {
-    return filterSearchedResult(searchedData);
-  });
-  // RESTRUCTURE FILTERED FETCHED DATA
-  const restructureFilteredFetchedData = filteredFetchedData.map((data) => {
     return {
-      parentProductId: uuid(),
-      productData: data.data,
+      productName: searchedData.productName,
+      productData: filterSearchedResult(searchedData.data),
     };
   });
+  // RESTRUCTURE FILTERED FETCHED DATA
+  const restructureFilteredFetchedData = filteredFetchedData.map(
+    (fetchedDataLists) => {
+      return {
+        productName: fetchedDataLists.productName,
+        parentId: uuid(),
+        productData: fetchedDataLists.productData.data,
+      };
+    }
+  );
+
+  // ADD TO MAIN-PERSONALIZED-DATA FOLDER
+  savedFetchedData(req, restructureFilteredFetchedData);
+  // SEND RESPOND DATA
   res.status(200).json(restructureFilteredFetchedData);
 };
 const getMainPersonalized = async (req, res) => {
