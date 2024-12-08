@@ -23,31 +23,4 @@ exports.seed = async function (knex) {
   await knex("history_products").insert(historyData);
   await knex("liked_products").insert(likedData);
   await knex("saved_products").insert(savedData);
-
-  // return knex("sources")
-  //   .del()
-  //   .then(() => {
-  //     return knex("current_searches")
-  //       .del()
-  //       .then(() => {
-  //         return knex("products")
-  //           .del()
-  //           .then(() => {
-  //             return knex("users").del();
-  //           });
-  //       });
-  //   })
-
-  //   .then(() => {
-  //     return knex("users").insert(usersData);
-  //   })
-  //   .then(() => {
-  //     return knex("products").insert(productsData);
-  //   })
-  //   .then(() => {
-  //     return knex("sources").insert(sourcesData);
-  //   })
-  //   .then(() => {
-  //     return knex("current_searches").insert(currentSearchData);
-  //   });
 };
