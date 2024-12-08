@@ -12,11 +12,12 @@ const port = process.env.PORT || 8000;
 app.use(cors({ origin: 3000 }));
 
 // ROUTES
-
 const userRoute = require("./routes/userRoutes");
 const getCurrentSearchPersonalizedRoute = require("./routes/getCurrentSearchPersonalizedRoute");
+const getMainPersonalizedRoute = require("./routes/getMainPersonalizedRoute");
 
 app.get("/getCurrentSearchPersonalized", getCurrentSearchPersonalizedRoute);
+app.get("/getMainPersonalized", getMainPersonalizedRoute);
 app.post("/addUser", userRoute);
 
 // START EXPRESS SERVER
