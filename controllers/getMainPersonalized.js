@@ -6,7 +6,7 @@ const serpapiKey = process.env.API_KEY;
 const { v4: uuid } = require("uuid");
 
 // GET SEARCH RESULT FROM SERPAPI API RESPOND AND ARE MODIFIED
-const filterSearchedResult = (req, searchedResult) => {
+const filterSearchedResult = (searchedResult) => {
   // MODIFY SHOPPING_RESULTS
   if (searchedResult.data.shopping_results) {
     return {
@@ -49,6 +49,7 @@ const filterSearchedResult = (req, searchedResult) => {
 };
 
 const fetchProducts = async (req, res, allProductsWithSources) => {
+  // MAKING SERPAPI API REQUEST
   const fetchedData = await Promise.all(
     allProductsWithSources.map(async (product) => {
       const sourceName = product.sources ? product.sources[0]?.name : "";
@@ -61,7 +62,7 @@ const fetchProducts = async (req, res, allProductsWithSources) => {
   );
   // FILTER FETCHED DATA
   const filteredFetchedData = fetchedData.map((searchedData) => {
-    return filterSearchedResult(req, searchedData);
+    return filterSearchedResult(searchedData);
   });
   // RESTRUCTURE FILTERED FETCHED DATA
   const restructureFilteredFetchedData = filteredFetchedData.map((data) => {
