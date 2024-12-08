@@ -61,19 +61,24 @@ const savedFetchedData = (req, fetchedData) => {
 };
 // MAKE FRESH API REQUEST TO GET DATA FOR ALL SELECTED PRODUCTS
 const fetchProducts = async (req, res, allProductsWithSources) => {
+  // COUNTER VARIABLE FOR TOTAL API REQUEST - TOTAL OF 4 API REQUEST ARE BEING AT THE MOMENT = TOTAL OF 4 PRODUCTS
+  let counterVal = 0;
   // MAKING SERPAPI API REQUEST
   const fetchedData = await Promise.all(
     allProductsWithSources.map(async (product) => {
       const sourceName = product.sources ? product.sources[0]?.name : "";
-      const searchedData = await axios.get(
-        `${baseAPI}&q=%22${formateProductName(
-          `${sourceName} ${product.productName} `
-        )}%22&api_key=${serpapiKey}`
-      );
-      return {
-        productName: product.productName,
-        data: searchedData,
-      };
+      if (counterVal < 4) {
+        const searchedData = await axios.get(
+          `${baseAPI}&q=%22${formateProductName(
+            `${sourceName} ${product.productName} `
+          )}%22&api_key=${serpapiKey}`
+        );
+        return {
+          productName: product.productName,
+          data: searchedData,
+        };
+      }
+      counterVal = counterVal + 1; // increment by +1
     })
   );
   // FILTER FETCHED DATA
