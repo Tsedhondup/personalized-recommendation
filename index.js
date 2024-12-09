@@ -16,11 +16,13 @@ const userRoute = require("./routes/userRoutes");
 const currentSearchPersonalizedRoute = require("./routes/currentSearchPersonalizedRoute");
 const mainPersonalizedRoute = require("./routes/mainPersonalizedRoute");
 const savedPersonalizedRoute = require("./routes/savedPersonalizedRoute");
+const likedPersonalizedRoute = require("./routes/likedPersonalizedRoute");
 
 app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
 app.use("/mainPersonalized", mainPersonalizedRoute);
 app.use("/user", userRoute);
 app.use("/savedPersonalized", savedPersonalizedRoute);
+app.use("/likedPersonalized", likedPersonalizedRoute);
 
 // START EXPRESS SERVER
 app.listen(port, () => {
