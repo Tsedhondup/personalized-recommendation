@@ -18,12 +18,17 @@ const mainPersonalizedRoute = require("./routes/mainPersonalizedRoute");
 const savedPersonalizedRoute = require("./routes/savedPersonalizedRoute");
 const likedPersonalizedRoute = require("./routes/likedPersonalizedRoute");
 const historyPersonalizedRoute = require("./routes/historyPersonalizedRoute");
-
+// require paraments: userId, currentSearch/searchOrigin, sessiionId,
 app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
+// require paraments: userId, sessionId
 app.use("/mainPersonalized", mainPersonalizedRoute);
+// require paraments: customed/selected products from users
 app.use("/user", userRoute);
+// require paraments: userId, saving-product for post only
 app.use("/savedPersonalized", savedPersonalizedRoute);
+// require paraments: userId, saving-product for post only
 app.use("/likedPersonalized", likedPersonalizedRoute);
+// require paraments: userId, saving-product for post only
 app.use("/historyPersonalized", historyPersonalizedRoute);
 
 // START EXPRESS SERVER
