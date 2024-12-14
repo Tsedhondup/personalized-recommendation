@@ -102,7 +102,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
   );
 };
 // GET SEARCH RESULT FROM SERPAPI API RESPOND AND ARE MODIFIED
-const getSearchedResult = (req, searchedResult) => {
+const modifiedSearchedResult = (req, searchedResult) => {
   // MODIFY SHOPPING_RESULTS
   if (searchedResult.data.shopping_results) {
     return {
@@ -179,7 +179,7 @@ const makeNewSearch = async (req, res) => {
     );
 
     // GET MODIFIED SEARCHED DATA
-    const modifiedSearchedData = getSearchedResult(req, searchResult);
+    const modifiedSearchedData = modifiedSearchedResult(req, searchResult);
     // ADD PERSONALIZED DATA TO USER TEMPORARY JSON FILE
     if (modifiedSearchedData.data.length > 0) {
       addSearchedDataToPersonalizedFile(req, modifiedSearchedData.data);
