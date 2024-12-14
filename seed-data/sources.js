@@ -8,23 +8,27 @@ module.exports = [
     name: "apple",
     source_score: 2,
     product_id: 1,
+    user_id: 2,
   },
   {
     id: 2,
     name: "amazon",
     source_score: 4,
     product_id: 2,
+    user_id: 1,
   },
   {
     id: 3,
     name: "best buy",
     source_score: 4,
     product_id: 1,
+    user_id: 3,
   },
   {
     id: 4,
     name: "No frill",
     source_score: 5,
     product_id: 2,
+    user_id: 2,
   },
 ];
