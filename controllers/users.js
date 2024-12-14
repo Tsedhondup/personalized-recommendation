@@ -34,5 +34,20 @@ const addUser = (req, res) => {
       console.log(error);
     });
 };
+// DELETE ENTIRE USER'S DATA
+const removeUser = async (req, res) => {
+  try {
+    await knex("saved_products").where("user_id", req.body.userId).delete();
+    await knex("liked_products").where("user_id", req.body.userId).delete();
+    await knex("history_products").where("user_id", req.body.userId).delete();
+    await knex("current_searches").where("user_id", req.body.userId).delete();
+    await knex("sources").where("user_id", req.body.userId).delete();
+    await knex("products").where("user_id", req.body.userId).delete();
+    await knex("users").where("user_id", req.body.userId).delete();
+    res.status(200).json({ message: "Task completed successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
 
-module.exports = { addUser };
+module.exports = { addUser, removeUser };

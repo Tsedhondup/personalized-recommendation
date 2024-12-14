@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const addUser = require("../controllers/users");
+const user = require("../controllers/users");
 
-router.route("/").post(addUser.addUser);
+router.route("/").post(user.addUser).delete(user.removeUser);
 module.exports = router;
