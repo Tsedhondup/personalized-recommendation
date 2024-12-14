@@ -22,5 +22,16 @@ const addHistoryPersonalized = async (req, res) => {
     res.status(500).json({ message: "something went wrong" });
   }
 };
-
-module.exports = { getHistoryPersonalized, addHistoryPersonalized };
+const deleteHistoryPersonalized = async (req, res) => {
+  try {
+    await knex("history_products").where("id", req.body.historyProductId).del();
+    res.status(200).json({ message: "Resource deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+  }
+};
+module.exports = {
+  getHistoryPersonalized,
+  addHistoryPersonalized,
+  deleteHistoryPersonalized,
+};

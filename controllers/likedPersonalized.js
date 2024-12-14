@@ -22,5 +22,17 @@ const addLikedPersonalized = async (req, res) => {
     res.status(500).json({ message: "something went wrong" });
   }
 };
+const deleteLikedPersonalized = async (req, res) => {
+  try {
+    await knex("liked_products").where("id", req.body.likedProductId).del();
+    res.status(200).json({ message: "Resource deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+  }
+};
 
-module.exports = { getLikedPersonalized, addLikedPersonalized };
+module.exports = {
+  getLikedPersonalized,
+  addLikedPersonalized,
+  deleteLikedPersonalized,
+};
