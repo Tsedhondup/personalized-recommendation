@@ -232,7 +232,6 @@ const getCurrentSearchPersonalized = async (req, res) => {
     // invoke conditional call-back functions
     hasLastSearch ? updatePreferences(req, res) : makeNewSearch(req, res);
   } catch (error) {
-    console.log("y is not working");
     res.status(500).json({
       message: "something went wrong",
     });
