@@ -106,11 +106,11 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
   }
 };
 // GET SEARCH RESULT FROM SERPAPI API RESPOND AND ARE MODIFIED
-const modifiedSearchedResult = (req, searchedResult) => {
+const modifiedSearchedResult = async (req, searchedResult) => {
   // MODIFY SHOPPING_RESULTS
   if (searchedResult.data.shopping_results) {
-    return {
-      data: searchedResult.data.shopping_results.map(async (product) => {
+    const data = await Promise.all(
+      searchedResult.data.shopping_results.map(async (product) => {
         // ADDING SEARCH PRODUCT TO HISTORY DATABASE
         await knex("history_products").insert({
           searchOrigin: req.body.currentSearch,
@@ -120,8 +120,8 @@ const modifiedSearchedResult = (req, searchedResult) => {
           source: product.source,
           source_logo: product.source_icon,
           price: product.price,
-          rating: product.rating ? product.rating : "0",
-          reviews: product.reviews ? product.reviews : "0",
+          rating: product.rating || "0",
+          reviews: product.reviews || "0",
           image: product.thumbnail,
         });
         return {
@@ -135,13 +135,14 @@ const modifiedSearchedResult = (req, searchedResult) => {
           reviews: product.reviews,
           image: product.thumbnail,
         };
-      }),
-    };
+      })
+    );
+    return data;
   }
   //MODIFIED IMMERSIVE_PRODUCTS
   if (searchedResult.immersive_products) {
-    return {
-      data: searchedResult.immersive_products.map(async (product) => {
+    const data = await Promise.all(
+      searchedResult.immersive_products.map(async (product) => {
         // ADDING SEARCH PRODUCT TO HISTORY DATABASE
         await knex("history_products").insert({
           searchOrigin: req.body.currentSearch,
@@ -151,8 +152,8 @@ const modifiedSearchedResult = (req, searchedResult) => {
           source: product.source,
           source_logo: product.source_icon,
           price: product.price,
-          rating: product.rating ? product.rating : "0",
-          reviews: product.reviews ? product.reviews : "0",
+          rating: product.rating || "0",
+          reviews: product.reviews || "0",
           image: product.thumbnail,
         });
         /*
@@ -169,8 +170,9 @@ const modifiedSearchedResult = (req, searchedResult) => {
           reviews: product.reviews,
           image: product.thumbnail,
         };
-      }),
-    };
+      })
+    );
+    return data;
   }
 };
 // MAKE FRESH API REQUEST TO GET NEW RELATED PRODUCTS TO CURRENT SEARCH
@@ -183,10 +185,14 @@ const makeNewSearch = async (req, res) => {
     );
 
     // GET MODIFIED SEARCHED DATA
-    const modifiedSearchedData = modifiedSearchedResult(req, searchResult);
+    const modifiedSearchedData = await modifiedSearchedResult(
+      req,
+      searchResult
+    );
+
     // ADD PERSONALIZED DATA TO USER TEMPORARY JSON FILE
-    if (modifiedSearchedData.data.length > 0) {
-      addSearchedDataToPersonalizedFile(req, modifiedSearchedData.data);
+    if (modifiedSearchedData.length > 0) {
+      addSearchedDataToPersonalizedFile(req, modifiedSearchedData);
     }
     // ADDING NEW SEARCHED PRODUCT TO DATABASE
     await knex("products").insert({
@@ -200,8 +206,8 @@ const makeNewSearch = async (req, res) => {
       user_id: req.body.userId,
     });
     // SEDING RESPOND
-    modifiedSearchedData.data.length > 0
-      ? res.status(200).json(modifiedSearchedData.data)
+    modifiedSearchedData.length > 0
+      ? res.status(200).json(modifiedSearchedData)
       : res.status(200).json({
           // new function will be created to further handle this task
           message: "send any back up recommendation data from saved file",
@@ -226,6 +232,7 @@ const getCurrentSearchPersonalized = async (req, res) => {
     // invoke conditional call-back functions
     hasLastSearch ? updatePreferences(req, res) : makeNewSearch(req, res);
   } catch (error) {
+    console.log("y is not working");
     res.status(500).json({
       message: "something went wrong",
     });
