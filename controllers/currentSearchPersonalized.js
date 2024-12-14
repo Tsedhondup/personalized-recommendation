@@ -106,7 +106,20 @@ const getSearchedResult = (req, searchedResult) => {
   // MODIFY SHOPPING_RESULTS
   if (searchedResult.data.shopping_results) {
     return {
-      data: searchedResult.data.shopping_results.map((product) => {
+      data: searchedResult.data.shopping_results.map(async (product) => {
+        // ADDING SEARCH PRODUCT TO HISTORY DATABASE
+        await knex("history_products").insert({
+          searchOrigin: req.body.currentSearch,
+          user_id: req.body.userId,
+          title: product.title,
+          link: product.product_link,
+          source: product.source,
+          source_logo: product.source_icon,
+          price: product.price,
+          rating: product.rating,
+          review: product.reviews,
+          image: product.thumbnail,
+        });
         return {
           searchOrigin: req.body.currentSearch,
           title: product.title,
@@ -124,7 +137,20 @@ const getSearchedResult = (req, searchedResult) => {
   //MODIFIED IMMERSIVE_PRODUCTS
   if (searchedResult.immersive_products) {
     return {
-      data: searchedResult.immersive_products.map((product) => {
+      data: searchedResult.immersive_products.map(async (product) => {
+        // ADDING SEARCH PRODUCT TO HISTORY DATABASE
+        await knex("history_products").insert({
+          searchOrigin: req.body.currentSearch,
+          user_id: req.body.userId,
+          title: product.title,
+          link: product.product_link,
+          source: product.source,
+          source_logo: product.source_icon,
+          price: product.price,
+          rating: product.rating,
+          review: product.reviews,
+          image: product.thumbnail,
+        });
         /*
          * product link is currently not available in immersive_products objects
          * use source name and direct user to source website when click on buy button
