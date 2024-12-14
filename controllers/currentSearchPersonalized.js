@@ -7,22 +7,26 @@ const serpapiKey = process.env.API_KEY;
 
 // GETTING TEMPORARILY SAVED PERSONALIZED PRODUCTS AND SEND THEM TO CLIENT SITE
 const getSavedPersonalized = (req, res) => {
-  fs.readFile(
-    `data/personalizedData/${req.body.sessionId}.json`,
-    (error, data) => {
-      if (error) {
-        console.log(error);
-        res.status(500).json({ message: "something went wrong" });
-      }
-      const personalizedData = JSON.parse(data);
-      const currentSearchPersonalizedData = personalizedData.filter(
-        (productLists) => {
-          return productLists.searchOrigin === req.body.currentSearch;
+  const userFilePath = `data/personalizedData/${req.body.sessionId}.json`;
+  if (fs.existsSync(userFilePath)) {
+    fs.readFile(
+      `data/personalizedData/${req.body.sessionId}.json`,
+      (error, data) => {
+        if (error) {
+          console.log("function name: getSavedPersonalized");
+          console.log(error);
+          res.status(500).json({ message: "something went wrong" });
         }
-      );
-      res.status(200).json(currentSearchPersonalizedData[0]);
-    }
-  );
+        const personalizedData = JSON.parse(data);
+        const currentSearchPersonalizedData = personalizedData.filter(
+          (productLists) => {
+            return productLists.searchOrigin === req.body.currentSearch;
+          }
+        );
+        res.status(200).json(currentSearchPersonalizedData[0]);
+      }
+    );
+  }
 };
 // UPDATE PREFERENCE SCORES OF SIMILAR SEARCHED PRODUCT NAME AND USER-ID - INVOKED IN getCurrentSearchPersonalized()
 const updatePreferences = async (req, res, lastSearchNames) => {
@@ -48,9 +52,11 @@ const updatePreferences = async (req, res, lastSearchNames) => {
           .catch((error) => console.error("Update failed:", error));
       })
       .catch((error) => {
+        console.log("function name: updatePreference axios error");
         console.log(error);
       });
   } catch (error) {
+    console.log("function name: updatePreference from try & catch");
     res.statu(500).json({ message: "Something went wrong " });
   }
 };
@@ -63,6 +69,9 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
       `data/personalizedData/${req.body.sessionId}.json`,
       (error, data) => {
         if (error) {
+          console.log(
+            "function name: addSearchDataToPersonalizedFile during fs.readFile"
+          );
           console.log(error);
         }
         // PARSED EXISITING PERSONALIZED DATA
@@ -80,6 +89,9 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
             `data/personalizedData/${req.body.sessionId}.json`,
             JSON.stringify(newPersonalizedData),
             (error) => {
+              console.log(
+                "function name: addSearchDataToPersonalizedFile during fs.writeFile"
+              );
               console.log(error);
             }
           );
