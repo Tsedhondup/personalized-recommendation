@@ -116,8 +116,8 @@ const getSearchedResult = (req, searchedResult) => {
           source: product.source,
           source_logo: product.source_icon,
           price: product.price,
-          rating: product.rating,
-          review: product.reviews,
+          rating: product.rating ? product.rating : "0",
+          reviews: product.reviews ? product.reviews : "0",
           image: product.thumbnail,
         });
         return {
@@ -128,7 +128,7 @@ const getSearchedResult = (req, searchedResult) => {
           source_logo: product.source_icon,
           price: product.price,
           rating: product.rating,
-          review: product.reviews,
+          reviews: product.reviews,
           image: product.thumbnail,
         };
       }),
@@ -147,8 +147,8 @@ const getSearchedResult = (req, searchedResult) => {
           source: product.source,
           source_logo: product.source_icon,
           price: product.price,
-          rating: product.rating,
-          review: product.reviews,
+          rating: product.rating ? product.rating : "0",
+          reviews: product.reviews ? product.reviews : "0",
           image: product.thumbnail,
         });
         /*
@@ -162,7 +162,7 @@ const getSearchedResult = (req, searchedResult) => {
           source_logo: product.source_icon,
           price: product.price,
           rating: product.rating,
-          review: product.reviews,
+          reviews: product.reviews,
           image: product.thumbnail,
         };
       }),

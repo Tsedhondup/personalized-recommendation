@@ -18,7 +18,7 @@ const mainPersonalizedRoute = require("./routes/mainPersonalizedRoute");
 const savedPersonalizedRoute = require("./routes/savedPersonalizedRoute");
 const likedPersonalizedRoute = require("./routes/likedPersonalizedRoute");
 const historyPersonalizedRoute = require("./routes/historyPersonalizedRoute");
-// require paraments: userId, currentSearch/searchOrigin, sessiionId,
+// require paraments: userId, currentSearch/searchOrigin, sessionId,
 app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
 // require paraments: userId, sessionId
 app.use("/mainPersonalized", mainPersonalizedRoute);
