@@ -57,49 +57,53 @@ const updatePreferences = async (req, res, lastSearchNames) => {
 
 // ADDING SEARCHED PRODUCTS TO PERSONALIZED JSON FILE
 const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
-  fs.readFile(
-    `data/personalizedData/${req.body.sessionId}.json`,
-    (error, data) => {
-      if (error) {
+  const userFilePath = `data/personalizedData/${req.body.sessionId}.json`;
+  if (fs.existsSync(userFilePath)) {
+    fs.readFile(
+      `data/personalizedData/${req.body.sessionId}.json`,
+      (error, data) => {
+        if (error) {
+          console.log(error);
+        }
+        // PARSED EXISITING PERSONALIZED DATA
+        const parsedData = JSON.parse(data);
+        // CHECK IF DATABASE CONTAINS PREFERENCE DATA
+        if (parsedData.length > 0) {
+          // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
+          const newPersonalizedItem = {
+            searchOrigin: req.body.currentSearch,
+            productData: personalizedData.map((product) => product),
+          };
+          // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
+          const newPersonalizedData = [...parsedData, newPersonalizedItem];
+          fs.writeFile(
+            `data/personalizedData/${req.body.sessionId}.json`,
+            JSON.stringify(newPersonalizedData),
+            (error) => {
+              console.log(error);
+            }
+          );
+        } else {
+        }
+      }
+    );
+  } else {
+    // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
+    const newPersonalizedItem = {
+      searchOrigin: req.body.currentSearch,
+      productData: personalizedData.map((product) => {
+        return product;
+      }),
+    };
+    // CREATING PERSONALIZED DATA FOR THE FIRST TIME
+    fs.writeFile(
+      `data/personalizedData/${req.body.sessionId}.json`,
+      JSON.stringify([newPersonalizedItem]),
+      (error) => {
         console.log(error);
       }
-      // PARSED EXISITING PERSONALIZED DATA
-      const parsedData = JSON.parse(data);
-      // CHECK IF DATABASE CONTAINS PREFERENCE DATA
-      if (parsedData.length > 0) {
-        // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
-        const newPersonalizedItem = {
-          searchOrigin: req.body.currentSearch,
-          productData: personalizedData.map((product) => product),
-        };
-        // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
-        const newPersonalizedData = [...parsedData, newPersonalizedItem];
-        fs.writeFile(
-          `personalizedData/${req.body.sessionId}.json`,
-          JSON.stringify(newPersonalizedData),
-          (error) => {
-            console.log(error);
-          }
-        );
-      } else {
-        // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
-        const newPersonalizedItem = {
-          searchOrigin: req.body.currentSearch,
-          productData: personalizedData.map((product) => {
-            return product;
-          }),
-        };
-        // CREATING PERSONALIZED DATA FOR THE FIRST TIME
-        fs.writeFile(
-          `personalizedData/${req.body.sessionId}.json`,
-          JSON.stringify([newPersonalizedItem]),
-          (error) => {
-            console.log(error);
-          }
-        );
-      }
-    }
-  );
+    );
+  }
 };
 // GET SEARCH RESULT FROM SERPAPI API RESPOND AND ARE MODIFIED
 const modifiedSearchedResult = (req, searchedResult) => {
