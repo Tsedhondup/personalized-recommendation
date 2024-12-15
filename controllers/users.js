@@ -27,7 +27,6 @@ const addUser = (req, res) => {
         .where("user_id", newUser[0])
         .then((data) => {
           // data contains userId and session data
-          console.log(req.body);
           addCustomProducts(req, res, data[0]);
         });
     })

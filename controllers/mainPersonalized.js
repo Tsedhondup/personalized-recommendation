@@ -52,7 +52,7 @@ const filterSearchedResult = (searchedResult) => {
 // TEMPORARILY SAVING MAIN PERSONALIZED PRODUCTS IN JSON FILE
 const savedFetchedData = (req, fetchedData) => {
   fs.writeFile(
-    `data/mainPersonalizedData/${req.body.sessionId}.json`,
+    `data/mainPersonalizedData/${req.query.sessionId}.json`,
     JSON.stringify(fetchedData),
     (error) => {
       console.log(error);
@@ -105,7 +105,7 @@ const fetchProducts = async (req, res, allProductsWithSources) => {
   res.status(200).json(restructureFilteredFetchedData);
 };
 const getMainPersonalized = async (req, res) => {
-  const allProducts = await knex("products").where("user_id", req.body.userId);
+  const allProducts = await knex("products").where("user_id", req.query.userId);
   const sortedProducts = allProducts.sort(
     (a, b) => a.preference_score - b.preference_score
   );
@@ -127,4 +127,18 @@ const getMainPersonalized = async (req, res) => {
   );
   fetchProducts(req, res, allProductsWithSources);
 };
-module.exports = { getMainPersonalized };
+
+const getAllCurrentMainPersonalized = (req, res) => {
+  console.log(req.query.sessionId);
+  fs.readFile(
+    `data/mainPersonalizedData/${req.query.sessionId}.json`,
+    (error, data) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json([]);
+      }
+      res.status(200).json(JSON.parse(data));
+    }
+  );
+};
+module.exports = { getMainPersonalized, getAllCurrentMainPersonalized };
