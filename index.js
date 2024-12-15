@@ -13,22 +13,26 @@ app.use(cors({ origin: 3000 }));
 
 // ROUTES
 const userRoute = require("./routes/userRoutes");
+const newProductRoute = require("./routes/searchNewProductRoute");
 const currentSearchPersonalizedRoute = require("./routes/currentSearchPersonalizedRoute");
 const mainPersonalizedRoute = require("./routes/mainPersonalizedRoute");
 const savedPersonalizedRoute = require("./routes/savedPersonalizedRoute");
 const likedPersonalizedRoute = require("./routes/likedPersonalizedRoute");
 const historyPersonalizedRoute = require("./routes/historyPersonalizedRoute");
-// require paraments: userId, currentSearch/searchOrigin, sessionId,
-app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
-// require paraments: userId, sessionId
-app.use("/mainPersonalized", mainPersonalizedRoute);
-// require paraments: customed/selected products from users
+// require parameters: customed/selected products from users
 app.use("/user", userRoute);
-// require paraments: userId, saving-product for post only
+// require parameter: product name, userId, sessionId
+app.use("newProduct", newProductRoute);
+// require parameters: userId, currentSearch/searchOrigin, sessionId,
+app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
+// require parameters: userId, sessionId
+app.use("/mainPersonalized", mainPersonalizedRoute);
+
+// require parameters: userId, saving-product for post only
 app.use("/savedPersonalized", savedPersonalizedRoute);
-// require paraments: userId, saving-product for post only
+// require parameters: userId, saving-product for post only
 app.use("/likedPersonalized", likedPersonalizedRoute);
-// require paraments: userId, saving-product for post only
+// require parameters: userId, saving-product for post only
 app.use("/historyPersonalized", historyPersonalizedRoute);
 
 // START EXPRESS SERVER
