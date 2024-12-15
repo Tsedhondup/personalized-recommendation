@@ -27,7 +27,6 @@ app.use("/newProduct", newProductRoute);
 app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
 // require parameters: userId, sessionId
 app.use("/mainPersonalized", mainPersonalizedRoute);
-
 // require parameters: userId, saving-product for post only
 app.use("/savedPersonalized", savedPersonalizedRoute);
 // require parameters: userId, saving-product for post only

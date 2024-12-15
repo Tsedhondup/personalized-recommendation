@@ -1,13 +1,12 @@
 const knex = require("knex")(require("../knexfile"));
-
 // const knex = require("knex")("../knexfile"); // promt to installe sqlite3 : investigate later
 const { v4: uuid } = require("uuid");
 
-const addCustomProducts = (req, res, user) => {
+const addCustomProducts = async (req, res, user) => {
   for (let i = 0; i < req.body.products.length; i++) {
-    knex("products")
+    await knex("products")
       .insert({
-        name: req.body.products[i],
+        name: req.body.products[i].productName,
         preference_score: 1,
         user_id: user.user_id,
       })
@@ -27,6 +26,8 @@ const addUser = (req, res) => {
       knex("users")
         .where("user_id", newUser[0])
         .then((data) => {
+          // data contains userId and session data
+          console.log(req.body);
           addCustomProducts(req, res, data[0]);
         });
     })
