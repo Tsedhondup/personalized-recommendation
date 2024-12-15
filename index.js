@@ -22,7 +22,7 @@ const historyPersonalizedRoute = require("./routes/historyPersonalizedRoute");
 // require parameters: customed/selected products from users
 app.use("/user", userRoute);
 // require parameter: product name, userId, sessionId
-app.use("newProduct", newProductRoute);
+app.use("/newProduct", newProductRoute);
 // require parameters: userId, currentSearch/searchOrigin, sessionId,
 app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
 // require parameters: userId, sessionId

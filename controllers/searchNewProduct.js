@@ -1,5 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
 const axios = require("axios");
+const fs = require("fs");
 const { v4: uuid } = require("uuid");
 const baseAPI = process.env.API_URl;
 const serpapiKey = process.env.API_KEY;
@@ -62,7 +63,7 @@ const addCurrentData = async (req, currentData) => {
   }
 };
 // GET SEARCH RESULT FROM SERPAPI API RESPOND AND ARE MODIFIED
-const modifiedSearchedResult = async (req, searchedResult) => {
+const modifiedSearchedResult = (req, searchedResult) => {
   // MODIFY SHOPPING_RESULTS
   if (searchedResult.data.shopping_results) {
     const data = searchedResult.data.shopping_results.map((product) => {
