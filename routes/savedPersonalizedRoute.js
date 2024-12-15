@@ -3,5 +3,6 @@ const savedPersonalized = require("../controllers/savedPersonalized");
 router
   .route("/")
   .get(savedPersonalized.getSavedPersonalized)
-  .post(savedPersonalized.addSavedPersonalized);
+  .post(savedPersonalized.addSavedPersonalized)
+  .delete(savedPersonalized.deleteSavedPersonalized);
 module.exports = router;

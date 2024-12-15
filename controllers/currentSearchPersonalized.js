@@ -196,7 +196,7 @@ const makeNewSearch = async (req, res) => {
       )}%22&api_key=${serpapiKey}`
     );
 
-    // GET MODIFIED SEARCHED DATA
+    // GET MODIFIED SEARCHED DATA - RETURNS PROMISE
     const modifiedSearchedData = await modifiedSearchedResult(
       req,
       searchResult

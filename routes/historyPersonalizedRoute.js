@@ -3,5 +3,6 @@ const historyPersonalized = require("../controllers/historyPersonalized");
 router
   .route("/")
   .get(historyPersonalized.getHistoryPersonalized)
-  .post(historyPersonalized.addHistoryPersonalized);
+  .post(historyPersonalized.addHistoryPersonalized)
+  .delete(historyPersonalized.deleteHistoryPersonalized);
 module.exports = router;
