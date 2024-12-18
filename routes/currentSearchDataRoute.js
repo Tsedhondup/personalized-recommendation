@@ -1,4 +1,4 @@
 const router = require("express").Router();
-const sendCurrentSearchData = require("../controllers/currentSearchData");
-router.route("/").get(sendCurrentSearchData.sendCurrentSearchData);
+const getCurrentSearchData = require("../controllers/currentSearchData");
+router.route("/").get(getCurrentSearchData.getCurrentSearchData);
 module.exports = router;

@@ -7,20 +7,16 @@ const getCurrentSearchData = (req, res) => {
     }
     const parsedData = JSON.parse(data);
     if (parsedData.length > 0) {
-      parsedData.filter((item) => {});
-      return item.sessionId === req.query.currentSearchId;
+      const currentSearchData = parsedData.filter((item) => {
+        return item.sessionId === req.query.currentSearchId;
+      });
+      if (currentSearchData.length > 0) {
+        res.status(200).json(currentSearchData);
+      } else {
+        res.status(200).json([]);
+      }
     }
   });
 };
 
-const sendCurrentSearchData = (req, res) => {
-  const currentSearchData = getCurrentSearchData(req, res);
-
-  if (currentSearchData.length > 0) {
-    res.status(200).json(currentSearchData);
-  } else {
-    res.status(200).json([]);
-  }
-};
-
-module.exports = { sendCurrentSearchData };
+module.exports = { getCurrentSearchData };
