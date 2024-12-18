@@ -26,7 +26,7 @@ app.use("/user", userRoute);
 // require parameter: product name, userId, sessionId
 app.use("/newProduct", newProductRoute);
 // require parameter: currentSearchId, userId, sessionId
-app.use("./currentSearchData", currentSearchDataRoute);
+app.use("/currentSearchData", currentSearchDataRoute);
 // require parameters: userId, currentSearch/searchOrigin, sessionId,
 app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
 // require parameters: userId, sessionId
