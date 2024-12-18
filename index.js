@@ -14,6 +14,7 @@ app.use(cors({ origin: 3000 }));
 // ROUTES
 const userRoute = require("./routes/userRoutes");
 const newProductRoute = require("./routes/searchNewProductRoute");
+const currentSearchDataRoute = require("./routes/currentSearchDataRoute");
 const currentSearchPersonalizedRoute = require("./routes/currentSearchPersonalizedRoute");
 const mainPersonalizedRoute = require("./routes/mainPersonalizedRoute");
 const savedPersonalizedRoute = require("./routes/savedPersonalizedRoute");
@@ -24,6 +25,8 @@ const historyPersonalizedRoute = require("./routes/historyPersonalizedRoute");
 app.use("/user", userRoute);
 // require parameter: product name, userId, sessionId
 app.use("/newProduct", newProductRoute);
+// require parameter: currentSearchId, userId, sessionId
+app.use("./currentSearchData", currentSearchDataRoute);
 // require parameters: userId, currentSearch/searchOrigin, sessionId,
 app.use("/currentSearchPersonalized", currentSearchPersonalizedRoute);
 // require parameters: userId, sessionId
