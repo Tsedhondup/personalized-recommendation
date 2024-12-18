@@ -8,10 +8,11 @@ const formateProductName = require("../utilities/formateProductName");
 
 // ADDING SEARCHED PRODUCTS TO PERSONALIZED JSON FILE
 const addCurrentData = async (req, currentData) => {
-  const userFilePath = `data/currentSearchData/${req.body.sessionId}.json`;
+  const searchId = uuid();
+  const userFilePath = `data/currentSearchData/${req.query.sessionId}.json`;
   if (fs.existsSync(userFilePath)) {
     fs.readFile(
-      `data/currentSearchData/${req.body.sessionId}.json`,
+      `data/currentSearchData/${req.query.sessionId}.json`,
       (error, data) => {
         if (error) {
           console.log(
@@ -25,14 +26,14 @@ const addCurrentData = async (req, currentData) => {
         if (parsedData.length > 0) {
           // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
           const newPersonalizedItem = {
-            searchOrigin: req.body.currentSearch,
-            searchId: uuid(),
+            searchOrigin: req.query.currentSearch,
+            searchId: searchId,
             data: currentData.map((product) => product),
           };
           // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
           const newPersonalizedData = [...parsedData, newPersonalizedItem];
           fs.writeFile(
-            `data/currentSearchData/${req.body.sessionId}.json`,
+            `data/currentSearchData/${req.query.sessionId}.json`,
             JSON.stringify(newPersonalizedData),
             (error) => {
               console.log(
@@ -48,19 +49,20 @@ const addCurrentData = async (req, currentData) => {
   } else {
     // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
     const newPersonalizedItem = {
-      searchOrigin: req.body.currentSearch,
-      searchId: uuid(),
+      searchOrigin: req.query.currentSearch,
+      searchId: searchId,
       data: currentData.map((product) => product),
     };
     // CREATING PERSONALIZED DATA FOR THE FIRST TIME
     fs.writeFile(
-      `data/currentSearchData/${req.body.sessionId}.json`,
+      `data/currentSearchData/${req.query.sessionId}.json`,
       JSON.stringify([newPersonalizedItem]),
       (error) => {
         console.log(error);
       }
     );
   }
+  return searchId; // this id will be send to client as repond
 };
 // GET SEARCH RESULT FROM SERPAPI API RESPOND AND ARE MODIFIED
 const modifiedSearchedResult = (req, searchedResult) => {
@@ -69,7 +71,7 @@ const modifiedSearchedResult = (req, searchedResult) => {
     const data = searchedResult.data.shopping_results.map((product) => {
       return {
         id: uuid(),
-        searchOrigin: req.body.currentSearch,
+        searchOrigin: req.query.currentSearch,
         title: product.title,
         link: product.product_link,
         source: product.source,
@@ -91,7 +93,7 @@ const modifiedSearchedResult = (req, searchedResult) => {
        */
       return {
         id: uuid(),
-        searchOrigin: req.body.currentSearch,
+        searchOrigin: req.query.currentSearch,
         title: product.title,
         source: product.source,
         source_logo: product.source_icon,
@@ -107,18 +109,20 @@ const modifiedSearchedResult = (req, searchedResult) => {
 const searchNewProduct = async (req, res) => {
   const searchResult = await axios.get(
     `${baseAPI}&q=%22${formateProductName(
-      `${req.body.productName} accessories`
+      `${req.query.currentSearch} accessories`
     )}%22&api_key=${serpapiKey}`
   );
 
   const modifiedSearchedData = modifiedSearchedResult(req, searchResult);
   // ADD PERSONALIZED DATA TO USER TEMPORARY JSON FILE
+  let currentProductSearchId; // holds unique id of current search product that will be used for reading current data from JSON file
   if (modifiedSearchedData.length > 0) {
-    addCurrentData(req, modifiedSearchedData);
+    currentProductSearchId = await addCurrentData(req, modifiedSearchedData);
   }
+  console.log(currentProductSearchId);
   // SEDING RESPOND
   modifiedSearchedData.length > 0
-    ? res.status(200).json(modifiedSearchedData)
+    ? res.status(200).json({ itemId: currentProductSearchId })
     : res.status(200).json({
         // new function will be created to further handle this task
         message: "something went wrong",

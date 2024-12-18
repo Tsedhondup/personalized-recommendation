@@ -129,7 +129,6 @@ const getMainPersonalized = async (req, res) => {
 };
 
 const getAllCurrentMainPersonalized = (req, res) => {
-  console.log(req.query.sessionId);
   fs.readFile(
     `data/mainPersonalizedData/${req.query.sessionId}.json`,
     (error, data) => {
