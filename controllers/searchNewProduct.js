@@ -123,7 +123,7 @@ const searchNewProduct = async (req, res) => {
   // ADD CURRENT SEARCHED PRODUCT NAME TO DATA BASE
   await knex("current_searches").insert({
     current_search: req.query.currentSearch,
-    search_id: uuid(),
+    search_id: currentProductSearchId,
     user_id: req.query.userId,
   });
   // SEDING RESPOND
@@ -134,6 +134,8 @@ const searchNewProduct = async (req, res) => {
         message: "something went wrong",
       });
 };
+
+// CHECK IF USER MAKE SEARCH WITH SIMILAR PRODUCT NAME
 const checkSimilarSearch = async (req, res) => {
   const hasSimilarSearchRecord = await knex("current_searches")
     .where("user_id", req.query.userId)
@@ -141,7 +143,6 @@ const checkSimilarSearch = async (req, res) => {
     .first();
 
   if (hasSimilarSearchRecord) {
-    console.log(hasSimilarSearchRecord);
     fs.readFile(
       `data/currentSearchData/${req.query.sessionId}.json`,
       (error, data) => {
@@ -151,7 +152,7 @@ const checkSimilarSearch = async (req, res) => {
         const parsedData = JSON.parse(data);
         if (parsedData.length > 0) {
           const currentSearchData = parsedData.filter((item) => {
-            return item.searchId === req.query.currentSearchId;
+            return item.searchId === hasSimilarSearchRecord.search_id;
           });
           if (currentSearchData.length > 0) {
             res.status(200).json(currentSearchData);
