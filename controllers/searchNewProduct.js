@@ -107,6 +107,7 @@ const modifiedSearchedResult = (req, searchedResult) => {
   }
 };
 const searchNewProduct = async (req, res) => {
+  // NEW SEARCH
   const searchResult = await axios.get(
     `${baseAPI}&q=%22${formateProductName(
       `${req.query.currentSearch} accessories`
@@ -121,8 +122,8 @@ const searchNewProduct = async (req, res) => {
   }
   // ADD CURRENT SEARCHED PRODUCT NAME TO DATA BASE
   await knex("current_searches").insert({
-    searchName: req.query.searchName,
-    userId: req.query.userId,
+    current_search: req.query.currentSearch,
+    user_id: req.query.userId,
   });
   // SEDING RESPOND
   modifiedSearchedData.length > 0
@@ -132,4 +133,35 @@ const searchNewProduct = async (req, res) => {
         message: "something went wrong",
       });
 };
-module.exports = { searchNewProduct };
+const checkSimilarSearch = async (req, res) => {
+  const hasSimilarSearchRecord = await knex("current_searches")
+    .where("user_id", req.query.userId)
+    .andWhere("current_search", req.query.currentSearch)
+    .first();
+
+  if (hasSimilarSearchRecord) {
+    fs.readFile(
+      `data/currentSearchData/${req.query.sessionId}.json`,
+      (error, data) => {
+        if (error) {
+          res.status(500).json([]); // preventing app from crashin on client siteF
+        }
+        const parsedData = JSON.parse(data);
+        if (parsedData.length > 0) {
+          const currentSearchData = parsedData.filter((item) => {
+            return item.searchId === req.query.currentSearchId;
+          });
+          if (currentSearchData.length > 0) {
+            res.status(200).json(currentSearchData);
+          } else {
+            res.status(200).json([]);
+          }
+        }
+      }
+    );
+  } else {
+    searchNewProduct(req, res);
+  }
+};
+
+module.exports = { checkSimilarSearch };

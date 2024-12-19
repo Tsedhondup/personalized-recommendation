@@ -51,6 +51,7 @@ exports.up = function (knex) {
     .createTable("current_searches", (table) => {
       table.increments("id").primary();
       table.string("current_search", 1000).notNullable();
+      table.string("search_id", 1000).notNullable();
       table
         .integer("user_id")
         .unsigned()
