@@ -123,6 +123,7 @@ const searchNewProduct = async (req, res) => {
   // ADD CURRENT SEARCHED PRODUCT NAME TO DATA BASE
   await knex("current_searches").insert({
     current_search: req.query.currentSearch,
+    search_id: uuid(),
     user_id: req.query.userId,
   });
   // SEDING RESPOND
@@ -140,6 +141,7 @@ const checkSimilarSearch = async (req, res) => {
     .first();
 
   if (hasSimilarSearchRecord) {
+    console.log(hasSimilarSearchRecord);
     fs.readFile(
       `data/currentSearchData/${req.query.sessionId}.json`,
       (error, data) => {
