@@ -28,7 +28,7 @@ const addCurrentData = async (req, currentData) => {
           const newPersonalizedItem = {
             searchOrigin: req.query.currentSearch,
             searchId: searchId,
-            data: currentData.map((product) => product),
+            searchData: currentData.map((product) => product),
           };
           // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
           const newPersonalizedData = [...parsedData, newPersonalizedItem];
@@ -51,7 +51,7 @@ const addCurrentData = async (req, currentData) => {
     const newPersonalizedItem = {
       searchOrigin: req.query.currentSearch,
       searchId: searchId,
-      data: currentData.map((product) => product),
+      searchData: currentData.map((product) => product),
     };
     // CREATING PERSONALIZED DATA FOR THE FIRST TIME
     fs.writeFile(
@@ -117,9 +117,13 @@ const searchNewProduct = async (req, res) => {
   // ADD PERSONALIZED DATA TO USER TEMPORARY JSON FILE
   let currentProductSearchId; // holds unique id of current search product that will be used for reading current data from JSON file
   if (modifiedSearchedData.length > 0) {
-    currentProductSearchId = await addCurrentData(req, modifiedSearchedData);
+    currentProductSearchId = await addCurrentData(req, modifiedSearchedData); // add current search data to json file and returns id of current search data object
   }
-  console.log(currentProductSearchId);
+  // ADD CURRENT SEARCHED PRODUCT NAME TO DATA BASE
+  await knex("current_searches").insert({
+    searchName: req.query.searchName,
+    userId: req.query.userId,
+  });
   // SEDING RESPOND
   modifiedSearchedData.length > 0
     ? res.status(200).json({ itemId: currentProductSearchId })
