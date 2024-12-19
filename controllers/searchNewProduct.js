@@ -155,7 +155,7 @@ const checkSimilarSearch = async (req, res) => {
             return item.searchId === hasSimilarSearchRecord.search_id;
           });
           if (currentSearchData.length > 0) {
-            res.status(200).json(currentSearchData);
+            res.status(200).json({ itemId: currentSearchData[0].searchId });
           } else {
             res.status(200).json([]);
           }
