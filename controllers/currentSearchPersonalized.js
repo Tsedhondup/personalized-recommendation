@@ -20,7 +20,7 @@ const getSavedPersonalized = (req, res) => {
         const personalizedData = JSON.parse(data);
         const currentSearchPersonalizedData = personalizedData.filter(
           (productLists) => {
-            return productLists.searchOrigin === req.body.currentSearch;
+            return productLists.searchOrigin === req.query.currentSearch;
           }
         );
         res.status(200).json(currentSearchPersonalizedData[0]);
@@ -80,13 +80,13 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
         if (parsedData.length > 0) {
           // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
           const newPersonalizedItem = {
-            searchOrigin: req.body.currentSearch,
+            searchOrigin: req.query.currentSearch,
             productData: personalizedData.map((product) => product),
           };
           // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
           const newPersonalizedData = [...parsedData, newPersonalizedItem];
           fs.writeFile(
-            `data/currentSearchPersonalizedData/${req.body.sessionId}.json`,
+            `data/currentSearchPersonalizedData/${req.query.sessionId}.json`,
             JSON.stringify(newPersonalizedData),
             (error) => {
               console.log(
@@ -102,7 +102,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
   } else {
     // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
     const newPersonalizedItem = {
-      searchOrigin: req.body.currentSearch,
+      searchOrigin: req.query.currentSearch,
       productData: personalizedData.map((product) => {
         return product;
       }),
