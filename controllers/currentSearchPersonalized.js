@@ -7,10 +7,10 @@ const serpapiKey = process.env.API_KEY;
 
 // GETTING TEMPORARILY SAVED PERSONALIZED PRODUCTS AND SEND THEM TO CLIENT SITE
 const getSavedPersonalized = (req, res) => {
-  const userFilePath = `data/currentSearchPersonalizedData/${req.body.sessionId}.json`;
+  const userFilePath = `data/currentSearchPersonalizedData/${req.query.sessionId}.json`;
   if (fs.existsSync(userFilePath)) {
     fs.readFile(
-      `data/personalizedData/${req.body.sessionId}.json`,
+      `data/personalizedData/${req.query.sessionId}.json`,
       (error, data) => {
         if (error) {
           console.log("function name: getSavedPersonalized");
@@ -33,16 +33,16 @@ const updatePreferences = async (req, res, lastSearchNames) => {
   // UPDATE PREFERENCE SCORE OF CURRENT SEARCHED PRODUCT
   try {
     await knex("products")
-      .where("name", req.body.currentSearch)
-      .andWhere("user_id", req.body.userId)
+      .where("name", req.query.currentSearch)
+      .andWhere("user_id", req.query.userId)
       .then((product) => {
         const updatedPeferenceScore = product[0].preference_score + 2; // actively search product by user will have double increment
         return updatedPeferenceScore;
       })
       .then((updatedPeferenceScore) => {
         knex("products")
-          .where("name", req.body.currentSearch)
-          .andWhere("user_id", req.body.userId)
+          .where("name", req.query.currentSearch)
+          .andWhere("user_id", req.query.userId)
           .update({
             preference_score: Number(updatedPeferenceScore),
           })
@@ -63,10 +63,10 @@ const updatePreferences = async (req, res, lastSearchNames) => {
 
 // ADDING SEARCHED PRODUCTS TO PERSONALIZED JSON FILE
 const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
-  const userFilePath = `data/personalizedData/${req.body.sessionId}.json`;
+  const userFilePath = `data/personalizedData/${req.query.sessionId}.json`;
   if (fs.existsSync(userFilePath)) {
     fs.readFile(
-      `data/currentSearchPersonalizedData/${req.body.sessionId}.json`,
+      `data/currentSearchPersonalizedData/${req.query.sessionId}.json`,
       (error, data) => {
         if (error) {
           console.log(
@@ -109,7 +109,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
     };
     // CREATING PERSONALIZED DATA FOR THE FIRST TIME
     fs.writeFile(
-      `data/currentSearchPersonalizedData/${req.body.sessionId}.json`,
+      `data/currentSearchPersonalizedData/${req.query.sessionId}.json`,
       JSON.stringify([newPersonalizedItem]),
       (error) => {
         console.log(error);
@@ -123,7 +123,7 @@ const modifiedSearchedResult = async (req, searchedResult) => {
   if (searchedResult.data.shopping_results) {
     const data = searchedResult.data.shopping_results.map((product) => {
       return {
-        searchOrigin: req.body.currentSearch,
+        searchOrigin: req.query.currentSearch,
         title: product.title,
         link: product.product_link,
         source: product.source,
@@ -144,7 +144,7 @@ const modifiedSearchedResult = async (req, searchedResult) => {
        * use source name and direct user to source website when click on buy button
        */
       return {
-        searchOrigin: req.body.currentSearch,
+        searchOrigin: req.query.currentSearch,
         title: product.title,
         source: product.source,
         source_logo: product.source_icon,
@@ -162,7 +162,7 @@ const makeNewSearch = async (req, res) => {
   try {
     const searchResult = await axios.get(
       `${baseAPI}&q=%22${formateProductName(
-        `${req.body.currentSearch} accessories`
+        `${req.query.currentSearch} accessories`
       )}%22&api_key=${serpapiKey}`
     );
 
@@ -180,12 +180,12 @@ const makeNewSearch = async (req, res) => {
     await knex("products").insert({
       name: req.body.currentSearch,
       preference_score: 1,
-      user_id: req.body.userId,
+      user_id: req.query.userId,
     });
     // ADDING CURRENT SEARCH NAME TO DATABASE
     await knex("current_searches").insert({
-      current_search: req.body.currentSearch,
-      user_id: req.body.userId,
+      current_search: req.query.currentSearch,
+      user_id: req.query.userId,
     });
     // SEDING RESPOND
     modifiedSearchedData.length > 0
