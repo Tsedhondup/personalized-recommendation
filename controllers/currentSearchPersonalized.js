@@ -210,15 +210,7 @@ const getCurrentSearchPersonalized = async (req, res) => {
       .where("user_id", req.query.userId)
       .andWhere("current_search", req.query.currentSearch)
       .first();
-    // get all search  history
-    // const lastSearchNames = await knex("current_searches").where(
-    //   "user_id",
-    //   req.body.userId
-    // );
-    // check if current search is same as last search
-    // const hasLastSearch = lastSearchNames.some((searchName) => {
-    //   return searchName.current_search === req.body.currentSearch;
-    // });
+
     // invoke conditional call-back functions
     hasSimilarSearchRecord
       ? updatePreferences(req, res)
