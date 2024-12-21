@@ -201,18 +201,28 @@ const makeNewSearch = async (req, res) => {
 
 // OPENING FUNCTION TO GETTING USER'S SEARCHED PERSONALIZED
 const getCurrentSearchPersonalized = async (req, res) => {
+  /*
+  Check if similar search(which is this case is search with similar search-origin) has make before 
+   */
+
   try {
+    const hasSimilarSearchRecord = await knex("current_searches")
+      .where("user_id", req.query.userId)
+      .andWhere("current_search", req.query.currentSearch)
+      .first();
     // get all search  history
-    const lastSearchNames = await knex("current_searches").where(
-      "user_id",
-      req.body.userId
-    );
+    // const lastSearchNames = await knex("current_searches").where(
+    //   "user_id",
+    //   req.body.userId
+    // );
     // check if current search is same as last search
-    const hasLastSearch = lastSearchNames.some((searchName) => {
-      return searchName.current_search === req.body.currentSearch;
-    });
+    // const hasLastSearch = lastSearchNames.some((searchName) => {
+    //   return searchName.current_search === req.body.currentSearch;
+    // });
     // invoke conditional call-back functions
-    hasLastSearch ? updatePreferences(req, res) : makeNewSearch(req, res);
+    hasSimilarSearchRecord
+      ? updatePreferences(req, res)
+      : makeNewSearch(req, res);
   } catch (error) {
     res.status(500).json({
       message: "something went wrong",
