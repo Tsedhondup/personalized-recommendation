@@ -7,7 +7,7 @@ const serpapiKey = process.env.API_KEY;
 
 // GETTING TEMPORARILY SAVED PERSONALIZED PRODUCTS AND SEND THEM TO CLIENT SITE
 const getSavedPersonalized = (req, res) => {
-  const userFilePath = `data/personalizedData/${req.body.sessionId}.json`;
+  const userFilePath = `data/currentSearchPersonalizedData/${req.body.sessionId}.json`;
   if (fs.existsSync(userFilePath)) {
     fs.readFile(
       `data/personalizedData/${req.body.sessionId}.json`,
@@ -66,7 +66,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
   const userFilePath = `data/personalizedData/${req.body.sessionId}.json`;
   if (fs.existsSync(userFilePath)) {
     fs.readFile(
-      `data/personalizedData/${req.body.sessionId}.json`,
+      `data/currentSearchPersonalizedData/${req.body.sessionId}.json`,
       (error, data) => {
         if (error) {
           console.log(
@@ -86,7 +86,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
           // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
           const newPersonalizedData = [...parsedData, newPersonalizedItem];
           fs.writeFile(
-            `data/personalizedData/${req.body.sessionId}.json`,
+            `data/currentSearchPersonalizedData/${req.body.sessionId}.json`,
             JSON.stringify(newPersonalizedData),
             (error) => {
               console.log(
@@ -109,7 +109,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
     };
     // CREATING PERSONALIZED DATA FOR THE FIRST TIME
     fs.writeFile(
-      `data/personalizedData/${req.body.sessionId}.json`,
+      `data/currentSearchPersonalizedData/${req.body.sessionId}.json`,
       JSON.stringify([newPersonalizedItem]),
       (error) => {
         console.log(error);
@@ -199,7 +199,7 @@ const makeNewSearch = async (req, res) => {
   }
 };
 
-// OPENING FUNCTION TO GETTING USER'S SEARCHED PRODUCTS
+// OPENING FUNCTION TO GETTING USER'S SEARCHED PERSONALIZED
 const getCurrentSearchPersonalized = async (req, res) => {
   try {
     // get all search  history
