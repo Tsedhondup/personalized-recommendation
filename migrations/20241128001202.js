@@ -139,11 +139,8 @@ exports.up = function (knex) {
     })
     .createTable("personalized_searches", (table) => {
       // PERSONALIZED SEARCHES
-      table
-        .increments("id")
-        .primary()
-        .table.string("search_name", 1000)
-        .notNullable();
+      table.increments("id").primary();
+      table.string("search_name", 1000).notNullable();
       table
         .integer("user_id")
         .unsigned()
