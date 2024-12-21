@@ -160,6 +160,11 @@ exports.up = function (knex) {
  */
 exports.down = function (knex) {
   return knex.schema
+    .dropTable("saved_products")
+    .dropTable("liked_products")
+    .dropTable("history_products")
+    .dropTable("current_searches")
+    .dropTable("personalized_searches")
     .dropTable("sources")
     .dropTable("products")
     .dropTable("users");

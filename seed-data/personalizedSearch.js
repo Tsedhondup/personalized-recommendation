@@ -4,13 +4,13 @@
  */
 module.exports = [
   {
-    i: 1,
+    id: 1,
     search_name: "table",
-    use_id: 1,
+    user_id: 1,
   },
   {
     id: 2,
     search_name: "pencil",
-    use_id: 1,
+    user_id: 1,
   },
 ];
