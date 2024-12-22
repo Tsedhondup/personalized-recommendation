@@ -1,5 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
 const axios = require("axios");
+const { v4: uuid } = require("uuid");
 const fs = require("fs");
 const formateProductName = require("../utilities/formateProductName");
 const baseAPI = process.env.API_URl;
@@ -10,7 +11,7 @@ const getSavedPersonalized = (req, res) => {
   const userFilePath = `data/currentSearchPersonalizedData/${req.query.sessionId}.json`;
   if (fs.existsSync(userFilePath)) {
     fs.readFile(
-      `data/personalizedData/${req.query.sessionId}.json`,
+      `data/currentSearchPersonalizedData/${req.query.sessionId}.json`,
       (error, data) => {
         if (error) {
           console.log("function name: getSavedPersonalized");
@@ -18,48 +19,48 @@ const getSavedPersonalized = (req, res) => {
           res.status(500).json({ message: "something went wrong" });
         }
         const personalizedData = JSON.parse(data);
-        const currentSearchPersonalizedData = personalizedData.filter(
-          (productLists) => {
-            return productLists.searchOrigin === req.query.currentSearch;
-          }
-        );
-        res.status(200).json(currentSearchPersonalizedData[0]);
+        // const currentSearchPersonalizedData = personalizedData.filter(
+        //   (productLists) => {
+        //     return productLists.searchOrigin === req.query.currentSearch;
+        //   }
+        // );
+        res.status(200).json(personalizedData);
       }
     );
   }
 };
 // UPDATE PREFERENCE SCORES OF SIMILAR SEARCHED PRODUCT NAME AND USER-ID - INVOKED IN getCurrentSearchPersonalized()
-const updatePreferences = async (req, res, lastSearchNames) => {
-  // UPDATE PREFERENCE SCORE OF CURRENT SEARCHED PRODUCT
-  try {
-    await knex("products")
-      .where("name", req.query.currentSearch)
-      .andWhere("user_id", req.query.userId)
-      .then((product) => {
-        const updatedPeferenceScore = product[0].preference_score + 2; // actively search product by user will have double increment
-        return updatedPeferenceScore;
-      })
-      .then((updatedPeferenceScore) => {
-        knex("products")
-          .where("name", req.query.currentSearch)
-          .andWhere("user_id", req.query.userId)
-          .update({
-            preference_score: Number(updatedPeferenceScore),
-          })
-          .then(() => {
-            getSavedPersonalized(req, res);
-          })
-          .catch((error) => console.error("Update failed:", error));
-      })
-      .catch((error) => {
-        console.log("function name: updatePreference axios error");
-        console.log(error);
-      });
-  } catch (error) {
-    console.log("function name: updatePreference from try & catch");
-    res.statu(500).json({ message: "Something went wrong " });
-  }
-};
+// const updatePreferences = async (req, res, lastSearchNames) => {
+//   // UPDATE PREFERENCE SCORE OF CURRENT SEARCHED PRODUCT
+//   try {
+//     await knex("products")
+//       .where("name", req.query.currentSearch)
+//       .andWhere("user_id", req.query.userId)
+//       .then((product) => {
+//         const updatedPeferenceScore = product[0].preference_score + 2; // actively search product by user will have double increment
+//         return updatedPeferenceScore;
+//       })
+//       .then((updatedPeferenceScore) => {
+//         knex("products")
+//           .where("name", req.query.currentSearch)
+//           .andWhere("user_id", req.query.userId)
+//           .update({
+//             preference_score: Number(updatedPeferenceScore),
+//           })
+//           .then(() => {
+//             getSavedPersonalized(req, res);
+//           })
+//           .catch((error) => console.error("Update failed:", error));
+//       })
+//       .catch((error) => {
+//         console.log("function name: updatePreference axios error");
+//         console.log(error);
+//       });
+//   } catch (error) {
+//     console.log("function name: updatePreference from try & catch");
+//     res.statu(500).json({ message: "Something went wrong " });
+//   }
+// };
 
 // ADDING SEARCHED PRODUCTS TO PERSONALIZED JSON FILE
 const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
@@ -80,7 +81,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
         if (parsedData.length > 0) {
           // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
           const newPersonalizedItem = {
-            searchOrigin: req.query.currentSearch,
+            searchOrigin: req.query.productName,
             productData: personalizedData.map((product) => product),
           };
           // ADDING NEW PERSONALIZED DATA TO NEW ARRAY CONTAINING ALL PERSONALIZED DATA
@@ -102,7 +103,7 @@ const addSearchedDataToPersonalizedFile = async (req, personalizedData) => {
   } else {
     // CREATE NEW PERSONALISED DATA FOR NEW SEARCH ORIGIN
     const newPersonalizedItem = {
-      searchOrigin: req.query.currentSearch,
+      searchOrigin: req.query.productName,
       productData: personalizedData.map((product) => {
         return product;
       }),
@@ -123,7 +124,8 @@ const modifiedSearchedResult = async (req, searchedResult) => {
   if (searchedResult.data.shopping_results) {
     const data = searchedResult.data.shopping_results.map((product) => {
       return {
-        searchOrigin: req.query.currentSearch,
+        searchOrigin: req.query.productName,
+        id: uuid(),
         title: product.title,
         link: product.product_link,
         source: product.source,
@@ -144,7 +146,8 @@ const modifiedSearchedResult = async (req, searchedResult) => {
        * use source name and direct user to source website when click on buy button
        */
       return {
-        searchOrigin: req.query.currentSearch,
+        searchOrigin: req.query.productName,
+        id: uuid(),
         title: product.title,
         source: product.source,
         source_logo: product.source_icon,
@@ -157,15 +160,54 @@ const modifiedSearchedResult = async (req, searchedResult) => {
     return data;
   }
 };
+
+// IF GOOGLE HAS NOT RETURNED ANY RESULTS FOR THE QUERY?
+const handleFailAPIRequest = (req, res) => {
+  fs.readFile(
+    `data/currentSearchData/${req.query.sessionId}.json`,
+    async (error, data) => {
+      if (error) {
+        res.status(200).json([]);
+      }
+      const parseData = JSON.parse(data);
+
+      const matchedData = parseData.filter((item) => {
+        return item.searchOrigin === req.query.searchOrigin;
+      });
+
+      const filteredData = [
+        {
+          searchOrigin: matchedData[0].searchOrigin,
+          productData: matchedData[0].searchData.map((item) => {
+            return item;
+          }),
+        },
+      ];
+      // ADDING CURRENT SEARCH NAME TO DATABASE
+      await knex("personalized_searches").insert({
+        search_name: req.query.productName,
+        user_id: req.query.userId,
+      });
+      res.status(200).json(filteredData);
+    }
+  );
+};
 // MAKE FRESH API REQUEST TO GET NEW RELATED PRODUCTS TO CURRENT SEARCH
 const makeNewSearch = async (req, res) => {
   try {
     const searchResult = await axios.get(
       `${baseAPI}&q=%22${formateProductName(
-        `${req.query.currentSearch} accessories`
+        `${req.query.productName} accessories`
       )}%22&api_key=${serpapiKey}`
     );
 
+    if (
+      !searchResult.data.shopping_results ||
+      !searchResult.immersive_products
+    ) {
+      handleFailAPIRequest(req, res);
+      return;
+    }
     // GET MODIFIED SEARCHED DATA - RETURNS PROMISE
     const modifiedSearchedData = await modifiedSearchedResult(
       req,
@@ -176,15 +218,10 @@ const makeNewSearch = async (req, res) => {
     if (modifiedSearchedData.length > 0) {
       addSearchedDataToPersonalizedFile(req, modifiedSearchedData);
     }
-    // ADDING NEW SEARCHED PRODUCT TO DATABASE
-    await knex("products").insert({
-      name: req.body.currentSearch,
-      preference_score: 1,
-      user_id: req.query.userId,
-    });
+
     // ADDING CURRENT SEARCH NAME TO DATABASE
-    await knex("current_searches").insert({
-      current_search: req.query.currentSearch,
+    await knex("personalized_searches").insert({
+      search_name: req.query.productName,
       user_id: req.query.userId,
     });
     // SEDING RESPOND
@@ -195,6 +232,8 @@ const makeNewSearch = async (req, res) => {
           message: "send any back up recommendation data from saved file",
         });
   } catch (error) {
+    console.log(error);
+    console.log("here 193");
     res.status(500).json({ message: "something went wrong" });
   }
 };
@@ -206,16 +245,17 @@ const getCurrentSearchPersonalized = async (req, res) => {
    */
 
   try {
-    const hasSimilarSearchRecord = await knex("current_searches")
+    const hasSimilarSearchRecord = await knex("personalized_searches")
       .where("user_id", req.query.userId)
-      .andWhere("current_search", req.query.currentSearch)
+      .andWhere("search_name", req.query.productName)
       .first();
 
     // invoke conditional call-back functions
     hasSimilarSearchRecord
-      ? updatePreferences(req, res)
+      ? getSavedPersonalized(req, res)
       : makeNewSearch(req, res);
   } catch (error) {
+    console.log("here 215");
     res.status(500).json({
       message: "something went wrong",
     });
